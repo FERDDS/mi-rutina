@@ -3,1265 +3,1096 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rutina — Hipertrofia + Media Maratón</title>
 <meta name="theme-color" content="#0f0f13">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Rutina — Hipertrofia + 21K</title>
 <style>
-:root{--bg:#0f0f13;--surface:#1a1a22;--card:#21212e;--border:#2e2e3d;--blue:#4f8ef7;--green:#3ecf8e;--orange:#f97316;--purple:#a78bfa;--text:#e8e8f0;--muted:#7c7c9a;}
+:root{
+  --bg:#0f0f13; --surface:#1a1a22; --card:#21212e; --border:#2e2e3d;
+  --blue:#4f8ef7; --green:#3ecf8e; --orange:#f97316; --purple:#a78bfa;
+  --text:#e8e8f0; --muted:#7c7c9a;
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;font-size:15px;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;}
 
-/* HEADER */
-header{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);padding:32px 16px 28px;text-align:center;border-bottom:1px solid var(--border);}
-header h1{font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,#fff 30%,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
-header p{color:var(--muted);font-size:.8rem;}
-
-/* STATS */
-.stats{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);}
-.chip{padding:5px 12px;border-radius:100px;font-size:.72rem;font-weight:600;}
+/* ── HEADER ── */
+header{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);padding:28px 16px 22px;text-align:center;border-bottom:1px solid var(--border);}
+header h1{font-size:1.35rem;font-weight:800;background:linear-gradient(135deg,#fff 30%,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:5px;}
+header p{color:var(--muted);font-size:.78rem;}
+.chips{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--border);}
+.chip{padding:4px 11px;border-radius:100px;font-size:.7rem;font-weight:600;}
 .chip-b{background:rgba(79,142,247,.15);color:var(--blue);border:1px solid rgba(79,142,247,.25);}
 .chip-g{background:rgba(62,207,142,.15);color:var(--green);border:1px solid rgba(62,207,142,.25);}
 .chip-o{background:rgba(249,115,22,.15);color:var(--orange);border:1px solid rgba(249,115,22,.25);}
 .chip-p{background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.25);}
 
-/* TABS */
-.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:0 12px;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
-.tab{padding:14px 16px;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;border:none;border-bottom:3px solid transparent;background:none;white-space:nowrap;transition:all .2s;min-height:48px;}
-.tab:hover,.tab:active{color:var(--text);}
-.tab.act-b{color:var(--blue);border-bottom-color:var(--blue);}
-.tab.act-g{color:var(--green);border-bottom-color:var(--green);}
-.tc{display:none;}
-.tc.show{display:block;}
+/* ── TABS ── */
+.tabbar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:0 12px;}
+.tabbtn{flex:1;padding:13px 8px;font-size:.85rem;font-weight:600;color:var(--muted);cursor:pointer;border:none;border-bottom:3px solid transparent;background:none;text-align:center;transition:all .2s;}
+.tabBtn-gym.active{color:var(--blue);border-bottom-color:var(--blue);}
+.tabBtn-run.active{color:var(--green);border-bottom-color:var(--green);}
 
-main{max-width:100%;margin:0 auto;padding:20px 14px 80px;}
-.stitle{font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
-.hint{color:var(--muted);font-size:.78rem;margin-bottom:16px;line-height:1.5;}
+/* ── TAB CONTENT ── */
+.tabpanel{display:none;}
+.tabpanel.active{display:block;}
+main{max-width:600px;margin:0 auto;padding:20px 14px 90px;}
 
-/* WEEK GRID - 2 cols on mobile, scrollable */
-.wk{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:28px;overflow-x:auto;}
-@media(max-width:480px){.wk{grid-template-columns:repeat(4,minmax(80px,1fr));padding-bottom:4px;}}
-.dc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;flex-shrink:0;}
-.dc.dg{border-top:3px solid var(--blue);}
-.dc.dr{border-top:3px solid var(--green);}
-.dc.db{border-top:3px solid var(--orange);}
-.dn{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;}
-.de{font-size:1.3rem;margin-bottom:4px;display:block;}
-.dl{font-size:.65rem;font-weight:600;line-height:1.3;}
-.ds{font-size:.6rem;color:var(--muted);margin-top:4px;}
-.bdg{display:inline-block;padding:2px 6px;border-radius:100px;font-size:.55rem;font-weight:700;text-transform:uppercase;margin-top:6px;}
-.bdg.bg{background:rgba(79,142,247,.15);color:var(--blue);}
-.bdg.br{background:rgba(62,207,142,.15);color:var(--green);}
-.bdg.bb{background:rgba(249,115,22,.15);color:var(--orange);}
+/* ── SECTION LABELS ── */
+.sec{font-size:.64rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:24px 0 10px;}
+.hint{color:var(--muted);font-size:.78rem;margin-bottom:14px;line-height:1.5;}
 
-/* WORKOUT CARDS - single col on mobile */
-.wg{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}
-.wc{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
-.wh{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px;}
-.wi{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
-.wi-b{background:rgba(79,142,247,.15);}.wi-p{background:rgba(167,139,250,.12);}.wi-o{background:rgba(249,115,22,.15);}
-.wm h2{font-size:.95rem;font-weight:700;margin-bottom:2px;}
-.wm span{font-size:.72rem;color:var(--muted);}
+/* ── WEEK GRID ── */
+.weekgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:24px;overflow-x:auto;}
+.daycell{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 6px;text-align:center;}
+.daycell.gym{border-top:3px solid var(--blue);}
+.daycell.run{border-top:3px solid var(--green);}
+.daycell.both{border-top:3px solid var(--orange);}
+.dayname{font-size:.52rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:3px;}
+.dayicon{font-size:1.25rem;display:block;margin-bottom:3px;}
+.daylabel{font-size:.62rem;font-weight:600;line-height:1.3;}
+.daybadge{display:inline-block;padding:1px 6px;border-radius:100px;font-size:.52rem;font-weight:700;text-transform:uppercase;margin-top:5px;}
+.badge-g{background:rgba(79,142,247,.15);color:var(--blue);}
+.badge-r{background:rgba(62,207,142,.15);color:var(--green);}
+.badge-b{background:rgba(249,115,22,.15);color:var(--orange);}
 
-/* TABLE → CARD LIST on mobile */
-table{display:none;}
-.ex-list{list-style:none;}
-.ex-item{border-bottom:1px solid rgba(255,255,255,.05);padding:0;}
-.ex-item:last-child{border-bottom:none;}
+/* ── WORKOUT CARDS ── */
+.wcard{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;}
+.whead{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.wicon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.wi-b{background:rgba(79,142,247,.15);} .wi-p{background:rgba(167,139,250,.12);} .wi-o{background:rgba(249,115,22,.15);}
+.wtitle{font-size:.9rem;font-weight:700;} .wsub{font-size:.7rem;color:var(--muted);margin-top:1px;}
 
-/* Exercise row - tap to expand image */
-.ex-row{display:flex;align-items:center;padding:12px 14px;gap:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s;active:background rgba(255,255,255,.03);}
-.ex-row:active{background:rgba(255,255,255,.04);}
-.ex-thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;background:rgba(255,255,255,.05);flex-shrink:0;border:1px solid var(--border);}
-.ex-info{flex:1;min-width:0;}
-.ex-name-m{font-size:.82rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ex-meta{display:flex;gap:6px;margin-top:3px;flex-wrap:wrap;}
-.ex-sets{font-size:.72rem;font-weight:700;color:var(--blue);}
-.ex-rest{font-size:.7rem;color:var(--muted);}
-.ex-muscle{font-size:.65rem;background:rgba(255,255,255,.06);color:var(--muted);padding:1px 6px;border-radius:4px;}
-.ex-chevron{font-size:.7rem;color:var(--muted);flex-shrink:0;transition:transform .2s;}
-.ex-item.open .ex-chevron{transform:rotate(180deg);}
+/* ── EXERCISE ROWS ── */
+.exlist{list-style:none;}
+.exitem{border-bottom:1px solid rgba(255,255,255,.05);}
+.exitem:last-child{border-bottom:none;}
+.exrow{display:flex;align-items:center;padding:11px 14px;gap:10px;cursor:pointer;transition:background .15s;}
+.exrow:active{background:rgba(255,255,255,.04);}
+.exthumb{width:46px;height:46px;border-radius:8px;object-fit:cover;background:rgba(255,255,255,.05);border:1px solid var(--border);flex-shrink:0;}
+.exinfo{flex:1;min-width:0;}
+.exname{font-size:.82rem;font-weight:600;}
+.exmeta{display:flex;gap:5px;margin-top:3px;flex-wrap:wrap;align-items:center;}
+.exsets{font-size:.72rem;font-weight:700;color:var(--blue);}
+.exrest{font-size:.68rem;color:var(--muted);}
+.exmusc{font-size:.62rem;background:rgba(255,255,255,.06);color:var(--muted);padding:1px 6px;border-radius:4px;}
+.chevron{font-size:.75rem;color:var(--muted);flex-shrink:0;transition:transform .2s;}
+.exitem.open .chevron{transform:rotate(180deg);}
 
-/* Expanded image panel */
-.ex-expand{display:none;padding:0 14px 14px;}
-.ex-item.open .ex-expand{display:block;}
-.ex-expand-img{width:100%;max-height:200px;object-fit:cover;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--border);}
-.ex-expand-tip{font-size:.75rem;color:var(--muted);margin-top:8px;line-height:1.5;padding:8px 10px;background:rgba(255,255,255,.03);border-radius:8px;border-left:2px solid var(--blue);}
-.ex-yt-link{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:.72rem;color:var(--blue);text-decoration:none;background:rgba(79,142,247,.1);padding:5px 10px;border-radius:6px;}
-
-/* VOLUME */
-.vs{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px;}
-.vsh{padding:16px;border-bottom:1px solid var(--border);}
-.vsh h2{font-size:.9rem;font-weight:700;}
-.vol-list{padding:8px 0;}
-.vol-row{display:flex;align-items:center;padding:8px 16px;gap:10px;}
-.vol-name{font-size:.8rem;width:110px;flex-shrink:0;}
-.vol-bar-wrap{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;}
-.vol-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--blue),var(--purple));}
-.vol-num{font-size:.75rem;font-weight:700;color:var(--blue);width:55px;text-align:right;flex-shrink:0;}
-
-/* TIPS */
-.tg{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
-.tc2{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:16px;}
-.tc2 h3{font-size:.84rem;font-weight:700;margin-bottom:8px;}
-.tc2 ul{list-style:none;display:flex;flex-direction:column;gap:6px;}
-.tc2 li{font-size:.78rem;color:var(--muted);padding-left:14px;position:relative;line-height:1.5;}
-.tc2 li::before{content:'→';position:absolute;left:0;color:var(--blue);font-size:.72rem;}
-
-/* ZONES */
-.zg{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
-.zc{border-radius:13px;padding:14px;border:1px solid var(--border);background:var(--card);position:relative;overflow:hidden;}
-.zc::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;}
-.z1c::before{background:#60a5fa;}.z2c::before{background:#34d399;}.z3c::before{background:#fbbf24;}.z4c::before{background:#f97316;}.z5c::before{background:#f43f5e;}
-.zc-inner{padding-left:12px;}
-.zc-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
-.zn{font-size:.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
-.z1c .zn{color:#60a5fa;}.z2c .zn{color:#34d399;}.z3c .zn{color:#fbbf24;}.z4c .zn{color:#f97316;}.z5c .zn{color:#f43f5e;}
-.zname{font-size:.9rem;font-weight:700;}
-.zbpm{font-size:.72rem;color:var(--muted);}
-.zpct{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.65rem;font-weight:700;margin-left:auto;}
-.z1c .zpct{background:rgba(96,165,250,.15);color:#60a5fa;}.z2c .zpct{background:rgba(52,211,153,.15);color:#34d399;}
-.z3c .zpct{background:rgba(251,191,36,.15);color:#fbbf24;}.z4c .zpct{background:rgba(249,115,22,.15);color:#f97316;}.z5c .zpct{background:rgba(244,63,94,.15);color:#f43f5e;}
-.zdesc{font-size:.75rem;color:var(--muted);line-height:1.5;}
-.zfeel{font-size:.7rem;color:var(--muted);margin-top:5px;font-style:italic;}
-
-/* RUN DAYS */
-.rdg{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
-.rdc{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
-.rdh{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
-.rdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.rdtitle{font-size:.87rem;font-weight:700;}
-.rdsub{font-size:.68rem;color:var(--muted);margin-top:1px;}
-.rdb{padding:14px 16px;display:flex;flex-direction:column;gap:8px;}
-.rst{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;}
-.rsl{color:var(--muted);}.rsv{font-weight:700;}
-.rzp{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
-.rz{display:inline-flex;align-items:center;padding:3px 10px;border-radius:100px;font-size:.7rem;font-weight:700;}
-.rz.z1{background:rgba(96,165,250,.15);color:#60a5fa;}.rz.z2{background:rgba(52,211,153,.15);color:#34d399;}
-.rz.z3{background:rgba(251,191,36,.15);color:#fbbf24;}.rz.z4{background:rgba(249,115,22,.15);color:#f97316;}
-.rnote{font-size:.74rem;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;margin-top:2px;line-height:1.5;}
-
-/* KM TABLE - horizontal scroll */
-.kw{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px;}
-.kwh{padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
-.kwh h2{font-size:.9rem;font-weight:700;}
-.kwtb{font-size:.75rem;color:var(--green);font-weight:700;background:rgba(62,207,142,.1);padding:3px 12px;border-radius:100px;border:1px solid rgba(62,207,142,.2);}
-.kw-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-.kw-scroll table{display:table;min-width:580px;}
-.kw-scroll thead tr{background:rgba(255,255,255,.03);}
-.kw-scroll thead th{padding:8px 12px;font-size:.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
-.kw-scroll tbody tr{border-bottom:1px solid rgba(255,255,255,.04);}
-.kw-scroll tbody tr:last-child{border-bottom:none;}
-.kw-scroll tbody td{padding:10px 12px;font-size:.78rem;white-space:nowrap;}
-.kk{font-weight:700;color:var(--green);}
-.knt{color:var(--muted);font-size:.7rem;}
-.ph{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.6rem;font-weight:700;text-transform:uppercase;}
-.ph-b{background:rgba(96,165,250,.15);color:#60a5fa;}.ph-d{background:rgba(251,191,36,.15);color:#fbbf24;}
-.ph-p{background:rgba(244,63,94,.15);color:#f43f5e;}.ph-t{background:rgba(167,139,250,.15);color:#a78bfa;}
-
-/* PACE */
-.pg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;}
-.pc{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:14px;}
-.plb{font-size:.62rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px;}
-.pv{font-size:1.15rem;font-weight:800;margin-bottom:2px;}
-.pd{font-size:.7rem;color:var(--muted);line-height:1.4;}
-
-/* Bottom nav bar */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
-.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 8px;cursor:pointer;border:none;background:none;color:var(--muted);font-size:.65rem;font-weight:600;gap:3px;min-height:56px;transition:color .2s;}
-.bnav-btn.act{color:var(--blue);}
-.bnav-btn.act.run{color:var(--green);}
-.bnav-btn span{font-size:1.2rem;}
-
-footer{text-align:center;padding:16px;color:var(--muted);font-size:.68rem;border-top:1px solid var(--border);}
-
-/* VIDEO PREVIEW */
-.ex-expand-img { display:none; } /* hide static image, replaced by video */
-.video-preview-wrap {
-  position: relative;
-  width: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #000;
-  aspect-ratio: 16/9;
+/* ── EXERCISE EXPAND ── */
+.exexpand{display:none;padding:0 14px 14px;}
+.exitem.open .exexpand{display:block;}
+.exbigimg{width:100%;max-height:200px;object-fit:cover;border-radius:10px;border:1px solid var(--border);display:block;margin-bottom:10px;background:#111;}
+.extip{font-size:.75rem;color:var(--muted);background:rgba(255,255,255,.03);border-left:2px solid var(--blue);padding:8px 10px;border-radius:0 8px 8px 0;line-height:1.5;margin-bottom:10px;}
+.ytbtn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:#ff0000;color:#fff;font-weight:700;font-size:.82rem;
+  padding:11px 16px;border-radius:10px;text-decoration:none;
+  transition:background .15s;
 }
-.video-preview-wrap iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-}
-.video-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: rgba(0,0,0,0.35);
-  transition: background 0.2s;
-  border-radius: 10px;
-}
-.video-overlay:hover, .video-overlay:active { background: rgba(0,0,0,0.1); }
-.play-btn {
-  width: 54px; height: 54px;
-  background: rgba(255,255,255,0.95);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  transition: transform 0.15s;
-}
-.video-overlay:active .play-btn { transform: scale(0.92); }
-.video-thumb-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  filter: brightness(0.75);
-}
-.video-preview-wrap.playing .video-overlay { display: none; }
-.video-preview-wrap.playing iframe { display: block; }
+.ytbtn:active{background:#cc0000;}
+.yticon{font-size:1rem;}
 
-/* Hover preview for desktop */
-@media (hover: hover) {
-  .ex-row { position: relative; }
-  .desktop-preview {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    width: 280px;
-    border-radius: 14px;
-    overflow: hidden;
-    background: #000;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-    border: 1px solid rgba(255,255,255,0.1);
-    pointer-events: none;
-    aspect-ratio: 16/9;
+/* ── VOLUME BARS ── */
+.volcard{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:24px;}
+.voltitle{padding:14px 16px;border-bottom:1px solid var(--border);font-size:.88rem;font-weight:700;}
+.volrow{display:flex;align-items:center;padding:9px 16px;gap:10px;border-bottom:1px solid rgba(255,255,255,.04);}
+.volrow:last-child{border-bottom:none;}
+.volname{font-size:.78rem;width:115px;flex-shrink:0;}
+.volbar{flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;}
+.volfill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--blue),var(--purple));}
+.volnum{font-size:.72rem;font-weight:700;color:var(--blue);width:54px;text-align:right;flex-shrink:0;}
+
+/* ── TIP CARDS ── */
+.tipgrid{display:grid;grid-template-columns:1fr;gap:11px;margin-bottom:24px;}
+.tipcard{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:15px 16px;}
+.tiptitle{font-size:.82rem;font-weight:700;margin-bottom:8px;}
+.tiplist{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.tiplist li{font-size:.76rem;color:var(--muted);padding-left:14px;position:relative;line-height:1.5;}
+.tiplist li::before{content:'→';position:absolute;left:0;color:var(--blue);font-size:.7rem;}
+
+/* ── RUNNING: ZONES ── */
+.zonelist{display:flex;flex-direction:column;gap:9px;margin-bottom:24px;}
+.zone{border-radius:12px;padding:13px 13px 13px 17px;border:1px solid var(--border);background:var(--card);position:relative;overflow:hidden;}
+.zone::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;border-radius:4px 0 0 4px;}
+.z1::before{background:#60a5fa;} .z2::before{background:#34d399;} .z3::before{background:#fbbf24;}
+.z4::before{background:#f97316;} .z5::before{background:#f43f5e;}
+.ztop{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
+.znum{font-size:.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
+.z1 .znum{color:#60a5fa;} .z2 .znum{color:#34d399;} .z3 .znum{color:#fbbf24;}
+.z4 .znum{color:#f97316;} .z5 .znum{color:#f43f5e;}
+.zname2{font-size:.88rem;font-weight:700;}
+.zbpm{font-size:.7rem;color:var(--muted);margin-left:auto;}
+.zpct{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.64rem;font-weight:700;}
+.z1 .zpct{background:rgba(96,165,250,.15);color:#60a5fa;} .z2 .zpct{background:rgba(52,211,153,.15);color:#34d399;}
+.z3 .zpct{background:rgba(251,191,36,.15);color:#fbbf24;} .z4 .zpct{background:rgba(249,115,22,.15);color:#f97316;}
+.z5 .zpct{background:rgba(244,63,94,.15);color:#f43f5e;}
+.zdesc2{font-size:.73rem;color:var(--muted);line-height:1.5;}
+.zfeel2{font-size:.68rem;color:var(--muted);margin-top:5px;font-style:italic;}
+
+/* ── RUN DAYS ── */
+.rundaylist{display:flex;flex-direction:column;gap:11px;margin-bottom:24px;}
+.runday{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.rundayhead{padding:13px 15px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.rundot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.rundaytitle{font-size:.85rem;font-weight:700;} .rundaysub{font-size:.67rem;color:var(--muted);margin-top:1px;}
+.rundaybody{padding:13px 15px;display:flex;flex-direction:column;gap:7px;}
+.rundayrow{display:flex;justify-content:space-between;font-size:.78rem;}
+.rundayrow span:first-child{color:var(--muted);} .rundayrow span:last-child{font-weight:700;}
+.rzones{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
+.rzone{padding:3px 9px;border-radius:100px;font-size:.68rem;font-weight:700;}
+.rz1{background:rgba(96,165,250,.15);color:#60a5fa;} .rz2{background:rgba(52,211,153,.15);color:#34d399;}
+.rz3{background:rgba(251,191,36,.15);color:#fbbf24;} .rz4{background:rgba(249,115,22,.15);color:#f97316;}
+.runnote{font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;margin-top:3px;line-height:1.5;}
+
+/* ── KM TABLE ── */
+.kmcard{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:24px;}
+.kmhead{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.kmtitle{font-size:.88rem;font-weight:700;}
+.kmbadge{font-size:.72rem;color:var(--green);font-weight:700;background:rgba(62,207,142,.1);padding:3px 11px;border-radius:100px;border:1px solid rgba(62,207,142,.2);}
+.kmscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.kmscroll table{min-width:560px;width:100%;border-collapse:collapse;}
+.kmscroll thead tr{background:rgba(255,255,255,.03);}
+.kmscroll th{padding:8px 11px;font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
+.kmscroll td{padding:9px 11px;font-size:.76rem;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,.04);}
+.kmscroll tr:last-child td{border-bottom:none;}
+.kmkm{font-weight:700;color:var(--green);}
+.kmnote{color:var(--muted);font-size:.68rem;}
+.ph{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.58rem;font-weight:700;text-transform:uppercase;}
+.ph-b{background:rgba(96,165,250,.15);color:#60a5fa;} .ph-d{background:rgba(251,191,36,.15);color:#fbbf24;}
+.ph-p{background:rgba(244,63,94,.15);color:#f43f5e;} .ph-t{background:rgba(167,139,250,.15);color:#a78bfa;}
+
+/* ── PACE GRID ── */
+.pacegrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:24px;}
+.pacecard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 14px;}
+.pacelabel{font-size:.6rem;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:3px;}
+.paceval{font-size:1.1rem;font-weight:800;margin-bottom:2px;}
+.pacedesc{font-size:.68rem;color:var(--muted);line-height:1.4;}
+
+/* ── BOTTOM NAV ── */
+.bottomnav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
+.navbtn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px 8px;cursor:pointer;border:none;background:none;color:var(--muted);font-size:.62rem;font-weight:600;gap:3px;min-height:54px;}
+.navbtn span{font-size:1.15rem;}
+.navbtn.active-gym{color:var(--blue);}
+.navbtn.active-run{color:var(--green);}
+
+/* ── DESKTOP HOVER PREVIEW ── */
+@media(hover:hover){
+  .hoverpreview{
+    display:none;position:fixed;z-index:9999;width:240px;
+    border-radius:13px;background:var(--card);
+    border:1px solid rgba(79,142,247,.3);
+    box-shadow:0 20px 60px rgba(0,0,0,.75);
+    pointer-events:none;overflow:hidden;
   }
-  .desktop-preview iframe {
-    width: 100%; height: 100%; border: none;
-  }
-  .desktop-preview.visible { display: block; }
+  .hoverpreview.show{display:block;}
+  .hoverpreview img{width:100%;height:135px;object-fit:cover;display:block;background:#111;}
+  .hpbody{padding:10px 12px;}
+  .hpname{font-size:.78rem;font-weight:700;margin-bottom:3px;}
+  .hptip{font-size:.68rem;color:var(--muted);line-height:1.4;}
+  .hpyt{font-size:.65rem;color:#f00;margin-top:5px;}
 }
-
 </style>
 </head>
 <body>
 
 <header>
   <h1>🏋️🏃 Hipertrofia + Media Maratón</h1>
-  <p>Upper/Lower 4 días · Plan carrera 16 semanas · Nivel Intermedio</p>
+  <p>Upper/Lower 4 días · Plan 16 semanas hasta 21K</p>
 </header>
 
-<div class="stats">
-  <div class="chip chip-b">🏋️ 4 días gimnasio</div>
-  <div class="chip chip-g">🏃 4 días carrera</div>
-  <div class="chip chip-o">⚡ 2 días combinados</div>
-  <div class="chip chip-p">📈 Progresión doble</div>
+<div class="chips">
+  <span class="chip chip-b">🏋️ 4 días gym</span>
+  <span class="chip chip-g">🏃 4 días carrera</span>
+  <span class="chip chip-o">⚡ 2 días dobles</span>
+  <span class="chip chip-p">📈 16 semanas</span>
 </div>
 
-<div class="tabs">
-  <button class="tab act-b" onclick="show('gym',this,'act-b')">🏋️ Gimnasio</button>
-  <button class="tab" onclick="show('run',this,'act-g')">🏃 Plan de Carrera</button>
+<div class="tabbar">
+  <button class="tabbtn tabBtn-gym active" onclick="switchTab('gym')">🏋️ Gimnasio</button>
+  <button class="tabBtn tabBtn-run" onclick="switchTab('run')">🏃 Carrera</button>
 </div>
 
-<!-- GYM TAB -->
-<div id="gym" class="tc show">
+<!-- ══ GYM TAB ══ -->
+<div id="tab-gym" class="tabpanel active">
 <main>
 
-<p class="stitle">Distribución semanal</p>
-<div class="wk">
-  <div class="dc db"><div class="dn">Lunes</div><span class="de">🏋️🏃</span><div class="dl">Upper A + Carrera fácil</div><div class="ds">Gym AM · Correr PM</div><span class="bdg bb">Doble</span></div>
-  <div class="dc dg"><div class="dn">Martes</div><span class="de">🏋️</span><div class="dl">Lower A — Fuerza</div><div class="ds">Solo gimnasio</div><span class="bdg bg">Gym</span></div>
-  <div class="dc dr"><div class="dn">Miércoles</div><span class="de">🏃</span><div class="dl">Carrera Tempo</div><div class="ds">Solo carrera</div><span class="bdg br">Carrera</span></div>
-  <div class="dc dg"><div class="dn">Jueves</div><span class="de">🏋️</span><div class="dl">Upper B — Hipertrofia</div><div class="ds">Solo gimnasio</div><span class="bdg bg">Gym</span></div>
-  <div class="dc db"><div class="dn">Viernes</div><span class="de">🏋️🏃</span><div class="dl">Lower B + Carrera fácil</div><div class="ds">Gym AM · Correr PM</div><span class="bdg bb">Doble</span></div>
-  <div class="dc dr"><div class="dn">Sábado</div><span class="de">🏃</span><div class="dl">Carrera Larga</div><div class="ds">Fondo principal</div><span class="bdg br">Carrera</span></div>
-  <div class="dc dr"><div class="dn">Domingo</div><span class="de">🚶</span><div class="dl">Recuperación activa</div><div class="ds">Ritmo muy suave</div><span class="bdg br">Carrera</span></div>
+<p class="sec">Distribución semanal</p>
+<div class="weekgrid">
+  <div class="daycell both"><div class="dayname">Lun</div><span class="dayicon">🏋️🏃</span><div class="daylabel">Upper A + Carrera</div><span class="daybadge badge-b">Doble</span></div>
+  <div class="daycell gym"><div class="dayname">Mar</div><span class="dayicon">🏋️</span><div class="daylabel">Lower A Fuerza</div><span class="daybadge badge-g">Gym</span></div>
+  <div class="daycell run"><div class="dayname">Mié</div><span class="dayicon">🏃</span><div class="daylabel">Carrera Tempo</div><span class="daybadge badge-r">Carrera</span></div>
+  <div class="daycell gym"><div class="dayname">Jue</div><span class="dayicon">🏋️</span><div class="daylabel">Upper B Hipert.</div><span class="daybadge badge-g">Gym</span></div>
+  <div class="daycell both"><div class="dayname">Vie</div><span class="dayicon">🏋️🏃</span><div class="daylabel">Lower B + Carrera</div><span class="daybadge badge-b">Doble</span></div>
+  <div class="daycell run"><div class="dayname">Sáb</div><span class="dayicon">🏃</span><div class="daylabel">Larga principal</div><span class="daybadge badge-r">Carrera</span></div>
+  <div class="daycell run"><div class="dayname">Dom</div><span class="dayicon">🚶</span><div class="daylabel">Recuperación</div><span class="daybadge badge-r">Suave</span></div>
 </div>
 
-<p class="stitle">Sesiones de gimnasio</p>
-<p class="hint">Toca cada ejercicio para ver la imagen y el video de referencia 👇</p>
+<p class="sec">Sesiones de gimnasio</p>
+<p class="hint">Toca cada ejercicio para ver la imagen y abrirlo en YouTube 👆</p>
+<div class="workcards">
 
-<div class="wg">
-  <div class="wc">
-    <div class="wh">
-      <div class="wi wi-b">💪</div>
-      <div class="wm"><h2>Upper A — Fuerza</h2><span>Lunes · Compuestos pesados · RIR 2-3</span></div>
+  <div class="wcard">
+    <div class="whead">
+      <div class="wicon wi-b">💪</div>
+      <div><div class="wtitle">Upper A — Fuerza</div><div class="wsub">Lunes · Compuestos pesados · RIR 2-3</div></div>
     </div>
-    <ul class="ex-list">
-      <li class="ex-item" id="upper_a-0">
-        <div class="ex-row" onclick="toggleEx('upper_a-0')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/vcBig73ojpE/mqdefault.jpg" alt="Press banca plano (barra)" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Press banca plano (barra)</div>
-            <div class="ex-meta">
-              <span class="ex-sets">4 × 4-6</span>
-              <span class="ex-rest">⏱ 3 min</span>
-              <span class="ex-muscle">Pecho</span>
+    <ul class="exlist">
+      <li class="exitem" id="upper_a-0">
+        <div class="exrow" onclick="toggleEx('upper_a-0')">
+          <img class="exthumb" src="https://img.youtube.com/vi/vcBig73ojpE/mqdefault.jpg" alt="Press banca plano (barra)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Press banca plano (barra)</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 4-6</span>
+              <span class="exrest">⏱ 3 min</span>
+              <span class="exmusc">Pecho</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-vcBig73ojpE">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/vcBig73ojpE/mqdefault.jpg" alt="Press banca plano (barra)">
-            <div class="video-overlay" onclick="playVideo('vcBig73ojpE')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-vcBig73ojpE" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Espalda apoyada, agarre a la anchura de hombros</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=vcBig73ojpE" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/vcBig73ojpE/mqdefault.jpg" alt="Press banca plano (barra)">
+          <p class="extip">💡 Espalda apoyada, agarre a la anchura de hombros</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=vcBig73ojpE" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_a-1">
-        <div class="ex-row" onclick="toggleEx('upper_a-1')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/FWJR5Ve8bnQ/mqdefault.jpg" alt="Remo con barra (pronado)" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Remo con barra (pronado)</div>
-            <div class="ex-meta">
-              <span class="ex-sets">4 × 4-6</span>
-              <span class="ex-rest">⏱ 3 min</span>
-              <span class="ex-muscle">Espalda</span>
+      <li class="exitem" id="upper_a-1">
+        <div class="exrow" onclick="toggleEx('upper_a-1')">
+          <img class="exthumb" src="https://img.youtube.com/vi/FWJR5Ve8bnQ/mqdefault.jpg" alt="Remo con barra (pronado)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Remo con barra (pronado)</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 4-6</span>
+              <span class="exrest">⏱ 3 min</span>
+              <span class="exmusc">Espalda</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-FWJR5Ve8bnQ">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/FWJR5Ve8bnQ/mqdefault.jpg" alt="Remo con barra (pronado)">
-            <div class="video-overlay" onclick="playVideo('FWJR5Ve8bnQ')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-FWJR5Ve8bnQ" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Espalda recta, codos pegados, tirar hacia el ombligo</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=FWJR5Ve8bnQ" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/FWJR5Ve8bnQ/mqdefault.jpg" alt="Remo con barra (pronado)">
+          <p class="extip">💡 Espalda recta, codos pegados, tirar hacia el ombligo</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=FWJR5Ve8bnQ" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_a-2">
-        <div class="ex-row" onclick="toggleEx('upper_a-2')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/qEwKCR5JCog/mqdefault.jpg" alt="Press militar mancuernas" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Press militar mancuernas</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 8-10</span>
-              <span class="ex-rest">⏱ 2 min</span>
-              <span class="ex-muscle">Hombros</span>
+      <li class="exitem" id="upper_a-2">
+        <div class="exrow" onclick="toggleEx('upper_a-2')">
+          <img class="exthumb" src="https://img.youtube.com/vi/qEwKCR5JCog/mqdefault.jpg" alt="Press militar mancuernas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Press militar mancuernas</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 8-10</span>
+              <span class="exrest">⏱ 2 min</span>
+              <span class="exmusc">Hombros</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-qEwKCR5JCog">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/qEwKCR5JCog/mqdefault.jpg" alt="Press militar mancuernas">
-            <div class="video-overlay" onclick="playVideo('qEwKCR5JCog')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-qEwKCR5JCog" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Empujar verticalmente, core activo, no arquear</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=qEwKCR5JCog" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/qEwKCR5JCog/mqdefault.jpg" alt="Press militar mancuernas">
+          <p class="extip">💡 Empujar verticalmente, core activo, no arquear la espalda</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=qEwKCR5JCog" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_a-3">
-        <div class="ex-row" onclick="toggleEx('upper_a-3')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/CAwf7n6Luuc/mqdefault.jpg" alt="Jalón al pecho agarre cerrado" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Jalón al pecho agarre cerrado</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 8-10</span>
-              <span class="ex-rest">⏱ 2 min</span>
-              <span class="ex-muscle">Espalda · Bíceps</span>
+      <li class="exitem" id="upper_a-3">
+        <div class="exrow" onclick="toggleEx('upper_a-3')">
+          <img class="exthumb" src="https://img.youtube.com/vi/CAwf7n6Luuc/mqdefault.jpg" alt="Jalón al pecho agarre cerrado" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Jalón al pecho agarre cerrado</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 8-10</span>
+              <span class="exrest">⏱ 2 min</span>
+              <span class="exmusc">Espalda · Bíceps</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-CAwf7n6Luuc">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/CAwf7n6Luuc/mqdefault.jpg" alt="Jalón al pecho agarre cerrado">
-            <div class="video-overlay" onclick="playVideo('CAwf7n6Luuc')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-CAwf7n6Luuc" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Tirar hacia el pecho, omoplatos hacia abajo</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=CAwf7n6Luuc" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/CAwf7n6Luuc/mqdefault.jpg" alt="Jalón al pecho agarre cerrado">
+          <p class="extip">💡 Tirar hacia el pecho, omoplatos hacia abajo y adentro</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=CAwf7n6Luuc" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_a-4">
-        <div class="ex-row" onclick="toggleEx('upper_a-4')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/rep-qVOkqgk/mqdefault.jpg" alt="Face Pulls en polea" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Face Pulls en polea</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 12-15</span>
-              <span class="ex-rest">⏱ 90 seg</span>
-              <span class="ex-muscle">Hombros post.</span>
+      <li class="exitem" id="upper_a-4">
+        <div class="exrow" onclick="toggleEx('upper_a-4')">
+          <img class="exthumb" src="https://img.youtube.com/vi/rep-qVOkqgk/mqdefault.jpg" alt="Face Pulls en polea" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Face Pulls en polea</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 12-15</span>
+              <span class="exrest">⏱ 90 seg</span>
+              <span class="exmusc">Hombros post.</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-rep-qVOkqgk">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/rep-qVOkqgk/mqdefault.jpg" alt="Face Pulls en polea">
-            <div class="video-overlay" onclick="playVideo('rep-qVOkqgk')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-rep-qVOkqgk" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Tirar hacia la cara, codos al nivel de hombros o más altos</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=rep-qVOkqgk" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/rep-qVOkqgk/mqdefault.jpg" alt="Face Pulls en polea">
+          <p class="extip">💡 Tirar hacia la cara, codos al nivel de los hombros</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=rep-qVOkqgk" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_a-5">
-        <div class="ex-row" onclick="toggleEx('upper_a-5')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/kwG2ipFRgfo/mqdefault.jpg" alt="Curl bíceps barra EZ" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Curl bíceps barra EZ</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 10-12</span>
-              <span class="ex-rest">⏱ 90 seg</span>
-              <span class="ex-muscle">Bíceps</span>
+      <li class="exitem" id="upper_a-5">
+        <div class="exrow" onclick="toggleEx('upper_a-5')">
+          <img class="exthumb" src="https://img.youtube.com/vi/kwG2ipFRgfo/mqdefault.jpg" alt="Curl bíceps barra EZ" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Curl bíceps barra EZ</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 10-12</span>
+              <span class="exrest">⏱ 90 seg</span>
+              <span class="exmusc">Bíceps</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-kwG2ipFRgfo">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/kwG2ipFRgfo/mqdefault.jpg" alt="Curl bíceps barra EZ">
-            <div class="video-overlay" onclick="playVideo('kwG2ipFRgfo')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-kwG2ipFRgfo" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Codos fijos, supinar la muñeca al subir, bajar controlado</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=kwG2ipFRgfo" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/kwG2ipFRgfo/mqdefault.jpg" alt="Curl bíceps barra EZ">
+          <p class="extip">💡 Codos fijos, supinar la muñeca al subir, bajar controlado</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=kwG2ipFRgfo" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_a-6">
-        <div class="ex-row" onclick="toggleEx('upper_a-6')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/2-LAMcpzODU/mqdefault.jpg" alt="Extensión tríceps en polea" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Extensión tríceps en polea</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 10-12</span>
-              <span class="ex-rest">⏱ 90 seg</span>
-              <span class="ex-muscle">Tríceps</span>
+      <li class="exitem" id="upper_a-6">
+        <div class="exrow" onclick="toggleEx('upper_a-6')">
+          <img class="exthumb" src="https://img.youtube.com/vi/2-LAMcpzODU/mqdefault.jpg" alt="Extensión tríceps en polea" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Extensión tríceps en polea</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 10-12</span>
+              <span class="exrest">⏱ 90 seg</span>
+              <span class="exmusc">Tríceps</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-2-LAMcpzODU">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/2-LAMcpzODU/mqdefault.jpg" alt="Extensión tríceps en polea">
-            <div class="video-overlay" onclick="playVideo('2-LAMcpzODU')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-2-LAMcpzODU" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Codos pegados al cuerpo, extensión completa, bajar lento</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=2-LAMcpzODU" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/2-LAMcpzODU/mqdefault.jpg" alt="Extensión tríceps en polea">
+          <p class="extip">💡 Codos pegados al cuerpo, extensión completa, bajar lento</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=2-LAMcpzODU" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
-      </li></ul>
+      </li>
+    </ul>
   </div>
-  <div class="wc">
-    <div class="wh">
-      <div class="wi wi-b">🦵</div>
-      <div class="wm"><h2>Lower A — Fuerza (Quad)</h2><span>Martes · Quad-dominante · RIR 2-3</span></div>
+
+  <div class="wcard">
+    <div class="whead">
+      <div class="wicon wi-b">🦵</div>
+      <div><div class="wtitle">Lower A — Fuerza (Quad)</div><div class="wsub">Martes · Quad-dominante · RIR 2-3</div></div>
     </div>
-    <ul class="ex-list">
-      <li class="ex-item" id="lower_a-0">
-        <div class="ex-row" onclick="toggleEx('lower_a-0')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/ultWZbUMPL8/mqdefault.jpg" alt="Sentadilla trasera (barra)" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Sentadilla trasera (barra)</div>
-            <div class="ex-meta">
-              <span class="ex-sets">4 × 4-6</span>
-              <span class="ex-rest">⏱ 3 min</span>
-              <span class="ex-muscle">Cuádriceps · Glúteos</span>
+    <ul class="exlist">
+      <li class="exitem" id="lower_a-0">
+        <div class="exrow" onclick="toggleEx('lower_a-0')">
+          <img class="exthumb" src="https://img.youtube.com/vi/ultWZbUMPL8/mqdefault.jpg" alt="Sentadilla trasera (barra)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Sentadilla trasera (barra)</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 4-6</span>
+              <span class="exrest">⏱ 3 min</span>
+              <span class="exmusc">Cuádriceps · Glúteos</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-ultWZbUMPL8">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/ultWZbUMPL8/mqdefault.jpg" alt="Sentadilla trasera (barra)">
-            <div class="video-overlay" onclick="playVideo('ultWZbUMPL8')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-ultWZbUMPL8" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Pies a la anchura de hombros, rodillas sobre pies, bajar a paralelo</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=ultWZbUMPL8" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/ultWZbUMPL8/mqdefault.jpg" alt="Sentadilla trasera (barra)">
+          <p class="extip">💡 Pies a anchura de hombros, rodillas sobre pies, bajar a paralelo</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=ultWZbUMPL8" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="lower_a-1">
-        <div class="ex-row" onclick="toggleEx('lower_a-1')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/IZxyjW7MPJQ/mqdefault.jpg" alt="Prensa de piernas" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Prensa de piernas</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 8-10</span>
-              <span class="ex-rest">⏱ 2 min</span>
-              <span class="ex-muscle">Cuádriceps</span>
+      <li class="exitem" id="lower_a-1">
+        <div class="exrow" onclick="toggleEx('lower_a-1')">
+          <img class="exthumb" src="https://img.youtube.com/vi/IZxyjW7MPJQ/mqdefault.jpg" alt="Prensa de piernas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Prensa de piernas</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 8-10</span>
+              <span class="exrest">⏱ 2 min</span>
+              <span class="exmusc">Cuádriceps</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-IZxyjW7MPJQ">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/IZxyjW7MPJQ/mqdefault.jpg" alt="Prensa de piernas">
-            <div class="video-overlay" onclick="playVideo('IZxyjW7MPJQ')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-IZxyjW7MPJQ" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Pies a la anchura de caderas, no bloquear rodillas</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=IZxyjW7MPJQ" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/IZxyjW7MPJQ/mqdefault.jpg" alt="Prensa de piernas">
+          <p class="extip">💡 Pies a anchura de caderas, no bloquear rodillas</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=IZxyjW7MPJQ" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="lower_a-2">
-        <div class="ex-row" onclick="toggleEx('lower_a-2')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/YyvSfVjQeL0/mqdefault.jpg" alt="Extensión de cuádriceps" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Extensión de cuádriceps</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 10-12</span>
-              <span class="ex-rest">⏱ 90 seg</span>
-              <span class="ex-muscle">Cuádriceps</span>
+      <li class="exitem" id="lower_a-2">
+        <div class="exrow" onclick="toggleEx('lower_a-2')">
+          <img class="exthumb" src="https://img.youtube.com/vi/YyvSfVjQeL0/mqdefault.jpg" alt="Extensión de cuádriceps" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Extensión de cuádriceps</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 10-12</span>
+              <span class="exrest">⏱ 90 seg</span>
+              <span class="exmusc">Cuádriceps</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-YyvSfVjQeL0">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/YyvSfVjQeL0/mqdefault.jpg" alt="Extensión de cuádriceps">
-            <div class="video-overlay" onclick="playVideo('YyvSfVjQeL0')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-YyvSfVjQeL0" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Extensión completa arriba, bajar lento en 3 segundos</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=YyvSfVjQeL0" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/YyvSfVjQeL0/mqdefault.jpg" alt="Extensión de cuádriceps">
+          <p class="extip">💡 Extensión completa arriba, bajar lento en 3 segundos</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=YyvSfVjQeL0" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="lower_a-3">
-        <div class="ex-row" onclick="toggleEx('lower_a-3')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/JCXUYuzwNrM/mqdefault.jpg" alt="Peso muerto rumano" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Peso muerto rumano</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 8-10</span>
-              <span class="ex-rest">⏱ 2 min</span>
-              <span class="ex-muscle">Isquios · Glúteos</span>
+      <li class="exitem" id="lower_a-3">
+        <div class="exrow" onclick="toggleEx('lower_a-3')">
+          <img class="exthumb" src="https://img.youtube.com/vi/JCXUYuzwNrM/mqdefault.jpg" alt="Peso muerto rumano" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Peso muerto rumano</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 8-10</span>
+              <span class="exrest">⏱ 2 min</span>
+              <span class="exmusc">Isquios · Glúteos</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-JCXUYuzwNrM">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/JCXUYuzwNrM/mqdefault.jpg" alt="Peso muerto rumano">
-            <div class="video-overlay" onclick="playVideo('JCXUYuzwNrM')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-JCXUYuzwNrM" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Espalda recta, caderas hacia atrás, sentir estiramiento</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=JCXUYuzwNrM" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/JCXUYuzwNrM/mqdefault.jpg" alt="Peso muerto rumano">
+          <p class="extip">💡 Espalda recta, caderas hacia atrás, sentir estiramiento</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=JCXUYuzwNrM" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="lower_a-4">
-        <div class="ex-row" onclick="toggleEx('lower_a-4')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/1Tq3QdYUuHs/mqdefault.jpg" alt="Curl isquiotibiales acostado" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Curl isquiotibiales acostado</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 10-12</span>
-              <span class="ex-rest">⏱ 90 seg</span>
-              <span class="ex-muscle">Isquiotibiales</span>
+      <li class="exitem" id="lower_a-4">
+        <div class="exrow" onclick="toggleEx('lower_a-4')">
+          <img class="exthumb" src="https://img.youtube.com/vi/1Tq3QdYUuHs/mqdefault.jpg" alt="Curl isquiotibiales acostado" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Curl isquiotibiales acostado</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 10-12</span>
+              <span class="exrest">⏱ 90 seg</span>
+              <span class="exmusc">Isquiotibiales</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-1Tq3QdYUuHs">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/1Tq3QdYUuHs/mqdefault.jpg" alt="Curl isquiotibiales acostado">
-            <div class="video-overlay" onclick="playVideo('1Tq3QdYUuHs')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-1Tq3QdYUuHs" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Caderas pegadas al banco, flexión completa, bajar controlado</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=1Tq3QdYUuHs" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/1Tq3QdYUuHs/mqdefault.jpg" alt="Curl isquiotibiales acostado">
+          <p class="extip">💡 Caderas pegadas al banco, flexión completa, bajar controlado</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=1Tq3QdYUuHs" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="lower_a-5">
-        <div class="ex-row" onclick="toggleEx('lower_a-5')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/gwLzBJYoWlI/mqdefault.jpg" alt="Elevación pantorrillas de pie" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Elevación pantorrillas de pie</div>
-            <div class="ex-meta">
-              <span class="ex-sets">4 × 12-15</span>
-              <span class="ex-rest">⏱ 60 seg</span>
-              <span class="ex-muscle">Gemelos</span>
+      <li class="exitem" id="lower_a-5">
+        <div class="exrow" onclick="toggleEx('lower_a-5')">
+          <img class="exthumb" src="https://img.youtube.com/vi/gwLzBJYoWlI/mqdefault.jpg" alt="Elevación pantorrillas de pie" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Elevación pantorrillas de pie</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 12-15</span>
+              <span class="exrest">⏱ 60 seg</span>
+              <span class="exmusc">Gemelos</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-gwLzBJYoWlI">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/gwLzBJYoWlI/mqdefault.jpg" alt="Elevación pantorrillas de pie">
-            <div class="video-overlay" onclick="playVideo('gwLzBJYoWlI')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-gwLzBJYoWlI" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Rango completo: talón abajo, punta arriba, pausa arriba</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=gwLzBJYoWlI" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/gwLzBJYoWlI/mqdefault.jpg" alt="Elevación pantorrillas de pie">
+          <p class="extip">💡 Rango completo: talón abajo, punta arriba, pausa arriba</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=gwLzBJYoWlI" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
-      </li></ul>
+      </li>
+    </ul>
   </div>
-  <div class="wc">
-    <div class="wh">
-      <div class="wi wi-p">🔥</div>
-      <div class="wm"><h2>Upper B — Hipertrofia</h2><span>Jueves · Volumen · RIR 1-2</span></div>
+
+  <div class="wcard">
+    <div class="whead">
+      <div class="wicon wi-p">🔥</div>
+      <div><div class="wtitle">Upper B — Hipertrofia</div><div class="wsub">Jueves · Volumen · RIR 1-2</div></div>
     </div>
-    <ul class="ex-list">
-      <li class="ex-item" id="upper_b-0">
-        <div class="ex-row" onclick="toggleEx('upper_b-0')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/8iPEnn-ltC8/mqdefault.jpg" alt="Press inclinado mancuernas" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Press inclinado mancuernas</div>
-            <div class="ex-meta">
-              <span class="ex-sets">4 × 8-12</span>
-              <span class="ex-rest">⏱ 2 min</span>
-              <span class="ex-muscle">Pecho superior</span>
+    <ul class="exlist">
+      <li class="exitem" id="upper_b-0">
+        <div class="exrow" onclick="toggleEx('upper_b-0')">
+          <img class="exthumb" src="https://img.youtube.com/vi/8iPEnn-ltC8/mqdefault.jpg" alt="Press inclinado mancuernas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Press inclinado mancuernas</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 8-12</span>
+              <span class="exrest">⏱ 2 min</span>
+              <span class="exmusc">Pecho superior</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-8iPEnn-ltC8">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/8iPEnn-ltC8/mqdefault.jpg" alt="Press inclinado mancuernas">
-            <div class="video-overlay" onclick="playVideo('8iPEnn-ltC8')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-8iPEnn-ltC8" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Banco a 30-45°, codos a 45° del torso, estirar el pecho</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=8iPEnn-ltC8" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/8iPEnn-ltC8/mqdefault.jpg" alt="Press inclinado mancuernas">
+          <p class="extip">💡 Banco a 30-45°, codos a 45° del torso, estirar el pecho</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=8iPEnn-ltC8" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_b-1">
-        <div class="ex-row" onclick="toggleEx('upper_b-1')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/GZbfZ033f74/mqdefault.jpg" alt="Remo en polea sentado (neutro)" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Remo en polea sentado (neutro)</div>
-            <div class="ex-meta">
-              <span class="ex-sets">4 × 10-12</span>
-              <span class="ex-rest">⏱ 2 min</span>
-              <span class="ex-muscle">Espalda media</span>
+      <li class="exitem" id="upper_b-1">
+        <div class="exrow" onclick="toggleEx('upper_b-1')">
+          <img class="exthumb" src="https://img.youtube.com/vi/GZbfZ033f74/mqdefault.jpg" alt="Remo en polea sentado (neutro)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Remo en polea sentado (neutro)</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 10-12</span>
+              <span class="exrest">⏱ 2 min</span>
+              <span class="exmusc">Espalda media</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-GZbfZ033f74">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/GZbfZ033f74/mqdefault.jpg" alt="Remo en polea sentado (neutro)">
-            <div class="video-overlay" onclick="playVideo('GZbfZ033f74')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-GZbfZ033f74" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Espalda recta, tirar hacia el abdomen, apretar espalda</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=GZbfZ033f74" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/GZbfZ033f74/mqdefault.jpg" alt="Remo en polea sentado (neutro)">
+          <p class="extip">💡 Espalda recta, tirar hacia el abdomen, apretar la espalda</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=GZbfZ033f74" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_b-2">
-        <div class="ex-row" onclick="toggleEx('upper_b-2')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/6Z15_WdXmVw/mqdefault.jpg" alt="Press Arnold mancuernas" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Press Arnold mancuernas</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 10-12</span>
-              <span class="ex-rest">⏱ 90 seg</span>
-              <span class="ex-muscle">Hombros</span>
+      <li class="exitem" id="upper_b-2">
+        <div class="exrow" onclick="toggleEx('upper_b-2')">
+          <img class="exthumb" src="https://img.youtube.com/vi/6Z15_WdXmVw/mqdefault.jpg" alt="Press Arnold mancuernas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Press Arnold mancuernas</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 10-12</span>
+              <span class="exrest">⏱ 90 seg</span>
+              <span class="exmusc">Hombros</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-6Z15_WdXmVw">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/6Z15_WdXmVw/mqdefault.jpg" alt="Press Arnold mancuernas">
-            <div class="video-overlay" onclick="playVideo('6Z15_WdXmVw')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-6Z15_WdXmVw" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Rotar la palma al subir, movimiento fluido y controlado</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=6Z15_WdXmVw" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/6Z15_WdXmVw/mqdefault.jpg" alt="Press Arnold mancuernas">
+          <p class="extip">💡 Rotar la palma al subir, movimiento fluido y controlado</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=6Z15_WdXmVw" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_b-3">
-        <div class="ex-row" onclick="toggleEx('upper_b-3')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/xr6eTQKkBgI/mqdefault.jpg" alt="Pull-over en polea alta" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Pull-over en polea alta</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 12-15</span>
-              <span class="ex-rest">⏱ 90 seg</span>
-              <span class="ex-muscle">Espalda · Pecho</span>
+      <li class="exitem" id="upper_b-3">
+        <div class="exrow" onclick="toggleEx('upper_b-3')">
+          <img class="exthumb" src="https://img.youtube.com/vi/xr6eTQKkBgI/mqdefault.jpg" alt="Pull-over en polea alta" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Pull-over en polea alta</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 12-15</span>
+              <span class="exrest">⏱ 90 seg</span>
+              <span class="exmusc">Espalda · Pecho</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-xr6eTQKkBgI">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/xr6eTQKkBgI/mqdefault.jpg" alt="Pull-over en polea alta">
-            <div class="video-overlay" onclick="playVideo('xr6eTQKkBgI')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-xr6eTQKkBgI" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Brazos ligeramente flexionados, arco amplio, sentir el dorsal</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=xr6eTQKkBgI" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/xr6eTQKkBgI/mqdefault.jpg" alt="Pull-over en polea alta">
+          <p class="extip">💡 Brazos ligeramente flexionados, arco amplio, sentir el dorsal</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=xr6eTQKkBgI" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_b-4">
-        <div class="ex-row" onclick="toggleEx('upper_b-4')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/Iwe6AmxVf7o/mqdefault.jpg" alt="Aperturas en polea (chest fly)" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Aperturas en polea (chest fly)</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 12-15</span>
-              <span class="ex-rest">⏱ 90 seg</span>
-              <span class="ex-muscle">Pecho</span>
+      <li class="exitem" id="upper_b-4">
+        <div class="exrow" onclick="toggleEx('upper_b-4')">
+          <img class="exthumb" src="https://img.youtube.com/vi/Iwe6AmxVf7o/mqdefault.jpg" alt="Aperturas en polea (chest fly)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Aperturas en polea (chest fly)</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 12-15</span>
+              <span class="exrest">⏱ 90 seg</span>
+              <span class="exmusc">Pecho</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-Iwe6AmxVf7o">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/Iwe6AmxVf7o/mqdefault.jpg" alt="Aperturas en polea (chest fly)">
-            <div class="video-overlay" onclick="playVideo('Iwe6AmxVf7o')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-Iwe6AmxVf7o" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Ligera flexión de codos, juntar en el centro, enfoca el pecho</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=Iwe6AmxVf7o" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/Iwe6AmxVf7o/mqdefault.jpg" alt="Aperturas en polea (chest fly)">
+          <p class="extip">💡 Ligera flexión de codos, juntar en el centro, enfoca el pecho</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=Iwe6AmxVf7o" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_b-5">
-        <div class="ex-row" onclick="toggleEx('upper_b-5')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/TwD-YGVP4Bk/mqdefault.jpg" alt="Curl martillo mancuernas" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Curl martillo mancuernas</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 12-15</span>
-              <span class="ex-rest">⏱ 90 seg</span>
-              <span class="ex-muscle">Bíceps · Braquial</span>
+      <li class="exitem" id="upper_b-5">
+        <div class="exrow" onclick="toggleEx('upper_b-5')">
+          <img class="exthumb" src="https://img.youtube.com/vi/TwD-YGVP4Bk/mqdefault.jpg" alt="Curl martillo mancuernas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Curl martillo mancuernas</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 12-15</span>
+              <span class="exrest">⏱ 90 seg</span>
+              <span class="exmusc">Bíceps · Braquial</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-TwD-YGVP4Bk">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/TwD-YGVP4Bk/mqdefault.jpg" alt="Curl martillo mancuernas">
-            <div class="video-overlay" onclick="playVideo('TwD-YGVP4Bk')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-TwD-YGVP4Bk" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Agarre neutro (pulgar arriba), codos fijos, controlado</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=TwD-YGVP4Bk" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/TwD-YGVP4Bk/mqdefault.jpg" alt="Curl martillo mancuernas">
+          <p class="extip">💡 Agarre neutro (pulgar arriba), codos fijos, movimiento controlado</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=TwD-YGVP4Bk" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="upper_b-6">
-        <div class="ex-row" onclick="toggleEx('upper_b-6')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/2z8JmcrW-As/mqdefault.jpg" alt="Fondos en paralelas" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Fondos en paralelas</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 10-15</span>
-              <span class="ex-rest">⏱ 90 seg</span>
-              <span class="ex-muscle">Tríceps · Pecho bajo</span>
+      <li class="exitem" id="upper_b-6">
+        <div class="exrow" onclick="toggleEx('upper_b-6')">
+          <img class="exthumb" src="https://img.youtube.com/vi/2z8JmcrW-As/mqdefault.jpg" alt="Fondos en paralelas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Fondos en paralelas</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 10-15</span>
+              <span class="exrest">⏱ 90 seg</span>
+              <span class="exmusc">Tríceps · Pecho bajo</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-2z8JmcrW-As">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/2z8JmcrW-As/mqdefault.jpg" alt="Fondos en paralelas">
-            <div class="video-overlay" onclick="playVideo('2z8JmcrW-As')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-2z8JmcrW-As" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Cuerpo ligeramente inclinado hacia adelante para el pecho</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=2z8JmcrW-As" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/2z8JmcrW-As/mqdefault.jpg" alt="Fondos en paralelas">
+          <p class="extip">💡 Cuerpo ligeramente inclinado hacia adelante para el pecho</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=2z8JmcrW-As" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
-      </li></ul>
+      </li>
+    </ul>
   </div>
-  <div class="wc">
-    <div class="wh">
-      <div class="wi wi-o">⚡</div>
-      <div class="wm"><h2>Lower B — Hipertrofia (Post-cadena)</h2><span>Viernes · Glúteos / Isquios · RIR 1-2</span></div>
+
+  <div class="wcard">
+    <div class="whead">
+      <div class="wicon wi-o">⚡</div>
+      <div><div class="wtitle">Lower B — Hipertrofia (Post-cadena)</div><div class="wsub">Viernes · Glúteos / Isquios · RIR 1-2</div></div>
     </div>
-    <ul class="ex-list">
-      <li class="ex-item" id="lower_b-0">
-        <div class="ex-row" onclick="toggleEx('lower_b-0')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/op9kVnSso6Q/mqdefault.jpg" alt="Peso muerto convencional" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Peso muerto convencional</div>
-            <div class="ex-meta">
-              <span class="ex-sets">4 × 5-7</span>
-              <span class="ex-rest">⏱ 3 min</span>
-              <span class="ex-muscle">Post-cadena completa</span>
+    <ul class="exlist">
+      <li class="exitem" id="lower_b-0">
+        <div class="exrow" onclick="toggleEx('lower_b-0')">
+          <img class="exthumb" src="https://img.youtube.com/vi/op9kVnSso6Q/mqdefault.jpg" alt="Peso muerto convencional" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Peso muerto convencional</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 5-7</span>
+              <span class="exrest">⏱ 3 min</span>
+              <span class="exmusc">Post-cadena completa</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-op9kVnSso6Q">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/op9kVnSso6Q/mqdefault.jpg" alt="Peso muerto convencional">
-            <div class="video-overlay" onclick="playVideo('op9kVnSso6Q')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-op9kVnSso6Q" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Espalda neutra, barra rozando las piernas, empujar el suelo</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=op9kVnSso6Q" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/op9kVnSso6Q/mqdefault.jpg" alt="Peso muerto convencional">
+          <p class="extip">💡 Espalda neutra, barra rozando las piernas, empujar el suelo</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=op9kVnSso6Q" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="lower_b-1">
-        <div class="ex-row" onclick="toggleEx('lower_b-1')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/2C-uNgKwPLE/mqdefault.jpg" alt="Sentadilla búlgara mancuernas" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Sentadilla búlgara mancuernas</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 10-12</span>
-              <span class="ex-rest">⏱ 2 min</span>
-              <span class="ex-muscle">Cuádriceps · Glúteos</span>
+      <li class="exitem" id="lower_b-1">
+        <div class="exrow" onclick="toggleEx('lower_b-1')">
+          <img class="exthumb" src="https://img.youtube.com/vi/2C-uNgKwPLE/mqdefault.jpg" alt="Sentadilla búlgara mancuernas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Sentadilla búlgara mancuernas</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 10-12</span>
+              <span class="exrest">⏱ 2 min</span>
+              <span class="exmusc">Cuádriceps · Glúteos</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-2C-uNgKwPLE">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/2C-uNgKwPLE/mqdefault.jpg" alt="Sentadilla búlgara mancuernas">
-            <div class="video-overlay" onclick="playVideo('2C-uNgKwPLE')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-2C-uNgKwPLE" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Pie trasero en banco, torso erguido, rodilla sobre tobillo</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=2C-uNgKwPLE" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/2C-uNgKwPLE/mqdefault.jpg" alt="Sentadilla búlgara mancuernas">
+          <p class="extip">💡 Pie trasero en banco, torso erguido, rodilla sobre tobillo</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=2C-uNgKwPLE" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="lower_b-2">
-        <div class="ex-row" onclick="toggleEx('lower_b-2')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/xDmFkJxPzeM/mqdefault.jpg" alt="Hip Thrust (barra)" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Hip Thrust (barra)</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 10-12</span>
-              <span class="ex-rest">⏱ 2 min</span>
-              <span class="ex-muscle">Glúteos</span>
+      <li class="exitem" id="lower_b-2">
+        <div class="exrow" onclick="toggleEx('lower_b-2')">
+          <img class="exthumb" src="https://img.youtube.com/vi/xDmFkJxPzeM/mqdefault.jpg" alt="Hip Thrust (barra)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Hip Thrust (barra)</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 10-12</span>
+              <span class="exrest">⏱ 2 min</span>
+              <span class="exmusc">Glúteos</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-xDmFkJxPzeM">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/xDmFkJxPzeM/mqdefault.jpg" alt="Hip Thrust (barra)">
-            <div class="video-overlay" onclick="playVideo('xDmFkJxPzeM')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-xDmFkJxPzeM" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Banca a altura de omoplatos, empujar talones, apretar glúteos</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=xDmFkJxPzeM" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/xDmFkJxPzeM/mqdefault.jpg" alt="Hip Thrust (barra)">
+          <p class="extip">💡 Banca a altura de omoplatos, empujar talones, apretar glúteos</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=xDmFkJxPzeM" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="lower_b-3">
-        <div class="ex-row" onclick="toggleEx('lower_b-3')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/1Tq3QdYUuHs/mqdefault.jpg" alt="Curl isquiotibiales de pie (polea)" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Curl isquiotibiales de pie (polea)</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 12-15</span>
-              <span class="ex-rest">⏱ 90 seg</span>
-              <span class="ex-muscle">Isquiotibiales</span>
+      <li class="exitem" id="lower_b-3">
+        <div class="exrow" onclick="toggleEx('lower_b-3')">
+          <img class="exthumb" src="https://img.youtube.com/vi/1Tq3QdYUuHs/mqdefault.jpg" alt="Curl isquiotibiales de pie (polea)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Curl isquiotibiales de pie (polea)</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 12-15</span>
+              <span class="exrest">⏱ 90 seg</span>
+              <span class="exmusc">Isquiotibiales</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-1Tq3QdYUuHs">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/1Tq3QdYUuHs/mqdefault.jpg" alt="Curl isquiotibiales de pie (polea)">
-            <div class="video-overlay" onclick="playVideo('1Tq3QdYUuHs')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-1Tq3QdYUuHs" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Flexión completa, contrae los isquios, baja en 3 segundos</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=1Tq3QdYUuHs" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/1Tq3QdYUuHs/mqdefault.jpg" alt="Curl isquiotibiales de pie (polea)">
+          <p class="extip">💡 Flexión completa, contrae los isquios, baja en 3 segundos</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=1Tq3QdYUuHs" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="lower_b-4">
-        <div class="ex-row" onclick="toggleEx('lower_b-4')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/kDqklk2LBRY/mqdefault.jpg" alt="Abducción de cadera (máquina)" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Abducción de cadera (máquina)</div>
-            <div class="ex-meta">
-              <span class="ex-sets">3 × 15</span>
-              <span class="ex-rest">⏱ 60 seg</span>
-              <span class="ex-muscle">Glúteo medio</span>
+      <li class="exitem" id="lower_b-4">
+        <div class="exrow" onclick="toggleEx('lower_b-4')">
+          <img class="exthumb" src="https://img.youtube.com/vi/kDqklk2LBRY/mqdefault.jpg" alt="Abducción de cadera (máquina)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Abducción de cadera (máquina)</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 15</span>
+              <span class="exrest">⏱ 60 seg</span>
+              <span class="exmusc">Glúteo medio</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-kDqklk2LBRY">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/kDqklk2LBRY/mqdefault.jpg" alt="Abducción de cadera (máquina)">
-            <div class="video-overlay" onclick="playVideo('kDqklk2LBRY')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-kDqklk2LBRY" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Movimiento controlado, no usar impulso, pausa al abrir</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=kDqklk2LBRY" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/kDqklk2LBRY/mqdefault.jpg" alt="Abducción de cadera (máquina)">
+          <p class="extip">💡 Movimiento controlado, no usar impulso, pausa al abrir</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=kDqklk2LBRY" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
       </li>
-      <li class="ex-item" id="lower_b-5">
-        <div class="ex-row" onclick="toggleEx('lower_b-5')">
-          <img class="ex-thumb" src="https://img.youtube.com/vi/gwLzBJYoWlI/mqdefault.jpg" alt="Pantorrillas en prensa" loading="lazy">
-          <div class="ex-info">
-            <div class="ex-name-m">Pantorrillas en prensa</div>
-            <div class="ex-meta">
-              <span class="ex-sets">4 × 15-20</span>
-              <span class="ex-rest">⏱ 60 seg</span>
-              <span class="ex-muscle">Gemelos · Soleo</span>
+      <li class="exitem" id="lower_b-5">
+        <div class="exrow" onclick="toggleEx('lower_b-5')">
+          <img class="exthumb" src="https://img.youtube.com/vi/gwLzBJYoWlI/mqdefault.jpg" alt="Pantorrillas en prensa" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Pantorrillas en prensa</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 15-20</span>
+              <span class="exrest">⏱ 60 seg</span>
+              <span class="exmusc">Gemelos · Soleo</span>
             </div>
           </div>
-          <span class="ex-chevron">▾</span>
+          <span class="chevron">▾</span>
         </div>
-                <div class="ex-expand">
-          <div class="video-preview-wrap" id="vpw-gwLzBJYoWlI">
-            <img class="video-thumb-bg" src="https://img.youtube.com/vi/gwLzBJYoWlI/mqdefault.jpg" alt="Pantorrillas en prensa">
-            <div class="video-overlay" onclick="playVideo('gwLzBJYoWlI')">
-              <div class="play-btn">▶</div>
-            </div>
-            <iframe id="iframe-gwLzBJYoWlI" src="" allow="autoplay; encrypted-media" allowfullscreen style="display:none;position:absolute;inset:0;width:100%;height:100%;"></iframe>
-          </div>
-          <div class="ex-expand-tip">💡 Rango completo, pausa en punta de pie, bajar al estiramiento</div>
-          <a class="ex-yt-link" href="https://www.youtube.com/watch?v=gwLzBJYoWlI" target="_blank" rel="noopener">↗ Ver completo en YouTube</a>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/gwLzBJYoWlI/mqdefault.jpg" alt="Pantorrillas en prensa">
+          <p class="extip">💡 Rango completo, pausa en punta de pie, bajar al estiramiento</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=gwLzBJYoWlI" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
         </div>
-      </li></ul>
+      </li>
+    </ul>
   </div>
 </div>
 
-<!-- VOLUME -->
-<div class="vs">
-  <div class="vsh"><h2>📊 Volumen semanal por músculo</h2></div>
-  <div class="vol-list"><div class="vol-row"><span class="vol-name">Pecho</span><div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:85%"></div></div><span class="vol-num">12 series</span></div><div class="vol-row"><span class="vol-name">Espalda</span><div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:100%"></div></div><span class="vol-num">14 series</span></div><div class="vol-row"><span class="vol-name">Hombros</span><div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:71%"></div></div><span class="vol-num">10 series</span></div><div class="vol-row"><span class="vol-name">Bíceps</span><div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:64%"></div></div><span class="vol-num">9 series</span></div><div class="vol-row"><span class="vol-name">Tríceps</span><div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:64%"></div></div><span class="vol-num">9 series</span></div><div class="vol-row"><span class="vol-name">Cuádriceps</span><div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:85%"></div></div><span class="vol-num">12 series</span></div><div class="vol-row"><span class="vol-name">Isquiotibiales</span><div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:71%"></div></div><span class="vol-num">10 series</span></div><div class="vol-row"><span class="vol-name">Glúteos</span><div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:71%"></div></div><span class="vol-num">10 series</span></div><div class="vol-row"><span class="vol-name">Gemelos</span><div class="vol-bar-wrap"><div class="vol-bar-fill" style="width:57%"></div></div><span class="vol-num">8 series</span></div></div>
+<p class="sec">Volumen semanal</p>
+<div class="volcard">
+  <div class="voltitle">📊 Series por grupo muscular</div>
+  <div class="volrow"><span class="volname">Pecho</span><div class="volbar"><div class="volfill" style="width:85%"></div></div><span class="volnum">12</span></div>
+<div class="volrow"><span class="volname">Espalda</span><div class="volbar"><div class="volfill" style="width:100%"></div></div><span class="volnum">14</span></div>
+<div class="volrow"><span class="volname">Hombros</span><div class="volbar"><div class="volfill" style="width:71%"></div></div><span class="volnum">10</span></div>
+<div class="volrow"><span class="volname">Bíceps</span><div class="volbar"><div class="volfill" style="width:64%"></div></div><span class="volnum">9</span></div>
+<div class="volrow"><span class="volname">Tríceps</span><div class="volbar"><div class="volfill" style="width:64%"></div></div><span class="volnum">9</span></div>
+<div class="volrow"><span class="volname">Cuádriceps</span><div class="volbar"><div class="volfill" style="width:85%"></div></div><span class="volnum">12</span></div>
+<div class="volrow"><span class="volname">Isquiotibiales</span><div class="volbar"><div class="volfill" style="width:71%"></div></div><span class="volnum">10</span></div>
+<div class="volrow"><span class="volname">Glúteos</span><div class="volbar"><div class="volfill" style="width:71%"></div></div><span class="volnum">10</span></div>
+<div class="volrow"><span class="volname">Gemelos</span><div class="volbar"><div class="volfill" style="width:57%"></div></div><span class="volnum">8</span></div>
 </div>
 
-<!-- TIPS GYM -->
-<p class="stitle">Principios clave — Gimnasio</p>
-<div class="tg">
-  <div class="tc2"><h3 style="color:var(--orange)">⚡ Días combinados (Lun/Vie)</h3><ul>
-    <li>Siempre gimnasio por la mañana primero</li><li>Carrera mínimo 6 horas después</li>
-    <li>Carrera esos días: Zona 1-2 solamente</li><li>Priorizar sueño esas noches</li>
+<p class="sec">Principios clave</p>
+<div class="tipgrid">
+  <div class="tipcard"><div class="tiptitle" style="color:var(--orange)">⚡ Días combinados</div><ul class="tiplist">
+    <li>Siempre gimnasio por la mañana primero</li>
+    <li>Carrera mínimo 6 horas después</li>
+    <li>Carrera esos días: Zona 1-2 solamente</li>
+    <li>Priorizar sueño esas noches</li>
   </ul></div>
-  <div class="tc2"><h3 style="color:var(--blue)">📈 Progresión</h3><ul>
-    <li>Upper/Lower A: doble progresión (reps → peso)</li><li>Upper/Lower B: RIR 1-2, cerca del fallo</li>
-    <li>Sube peso al completar el rango alto</li><li>Registra cada sesión para trackear</li>
+  <div class="tipcard"><div class="tiptitle" style="color:var(--blue)">📈 Progresión</div><ul class="tiplist">
+    <li>Upper/Lower A: doble progresión (reps → peso)</li>
+    <li>Upper/Lower B: RIR 1-2, cerca del fallo</li>
+    <li>Sube peso al completar el rango alto</li>
+    <li>Registra cada sesión para trackear</li>
   </ul></div>
-  <div class="tc2"><h3 style="color:var(--green)">🏃 Sincronía con carrera</h3><ul>
-    <li>Miércoles libre para calidad máxima de running</li><li>Si la larga del sábado es +16km, reduce Lower B</li>
-    <li>No hacer intervalos Z5 el día post-lower pesado</li><li>Martes solo gym: recuperación total</li>
+  <div class="tipcard"><div class="tiptitle" style="color:var(--green)">🏃 Sincronía con carrera</div><ul class="tiplist">
+    <li>Miércoles: único día libre para calidad máxima</li>
+    <li>Si la larga del sábado es +16km, reduce Lower B</li>
+    <li>No hacer intervalos Z5 el día post-lower pesado</li>
+    <li>Martes solo gym: recuperación total</li>
   </ul></div>
-  <div class="tc2"><h3 style="color:var(--purple)">😴 Recuperación</h3><ul>
-    <li>Proteína: 1.8-2.2 g/kg peso/día</li><li>Carbohidratos altos en días combinados</li>
-    <li>7-9 horas de sueño es parte del programa</li><li>Hidratación extra en días dobles</li>
+  <div class="tipcard"><div class="tiptitle" style="color:var(--purple)">😴 Recuperación</div><ul class="tiplist">
+    <li>Proteína: 1.8-2.2 g/kg peso/día</li>
+    <li>Carbohidratos altos en días combinados</li>
+    <li>7-9 horas de sueño es parte del programa</li>
+    <li>Hidratación extra en días dobles</li>
   </ul></div>
 </div>
 
 </main>
 </div>
 
-<!-- RUNNING TAB -->
-<div id="run" class="tc">
+<!-- ══ RUN TAB ══ -->
+<div id="tab-run" class="tabpanel">
 <main>
 
-<p class="stitle">Las 5 zonas de entrenamiento</p>
-<p class="hint">Basa tus zonas en tu <strong style="color:var(--text)">FCmáx = 220 − edad</strong>. El 80% del entrenamiento debe estar en Zona 1-2 (método polarizado).</p>
-<div class="zg">
-  <div class="zc z1c"><div class="zc-inner">
-    <div class="zc-top"><span class="zn">Zona 1</span><span class="zname">Recuperación</span><span class="zbpm">50-60% FCmáx</span><span class="zpct">Muy fácil</span></div>
-    <div class="zdesc">Trote suave post-gym. Activa circulación sin fatiga adicional.</div>
-    <div class="zfeel">💬 Puedo hablar por teléfono</div>
-  </div></div>
-  <div class="zc z2c"><div class="zc-inner">
-    <div class="zc-top"><span class="zn">Zona 2</span><span class="zname">Base Aeróbica</span><span class="zbpm">60-70% FCmáx</span><span class="zpct">Fácil</span></div>
-    <div class="zdesc">La zona más importante. Construye el motor aeróbico. 60-70% de todo el volumen.</div>
-    <div class="zfeel">💬 Frases cortas</div>
-  </div></div>
-  <div class="zc z3c"><div class="zc-inner">
-    <div class="zc-top"><span class="zn">Zona 3</span><span class="zname">Moderado</span><span class="zbpm">70-80% FCmáx</span><span class="zpct">Moderado</span></div>
-    <div class="zdesc">Final de carrera larga y rodajes progresivos. Usar con moderación.</div>
-    <div class="zfeel">💬 Pocas palabras</div>
-  </div></div>
-  <div class="zc z4c"><div class="zc-inner">
-    <div class="zc-top"><span class="zn">Zona 4</span><span class="zname">Umbral Láctico</span><span class="zbpm">80-90% FCmáx</span><span class="zpct">Duro</span></div>
-    <div class="zdesc">Ritmo tempo. Clave para sostener el ritmo en media maratón.</div>
-    <div class="zfeel">💬 1-2 palabras</div>
-  </div></div>
-  <div class="zc z5c"><div class="zc-inner">
-    <div class="zc-top"><span class="zn">Zona 5</span><span class="zname">VO₂ Máx</span><span class="zbpm">90-100% FCmáx</span><span class="zpct">Máximo</span></div>
-    <div class="zdesc">Intervalos cortos 1-5 min. Máx 10% del volumen total.</div>
-    <div class="zfeel">💬 Imposible hablar</div>
-  </div></div>
+<p class="sec">Las 5 zonas de entrenamiento</p>
+<p class="hint">FCmáx = 220 − edad. El 80% del entrenamiento debe estar en Zona 1-2.</p>
+<div class="zonelist">
+  <div class="zone z1">
+    <div class="ztop"><span class="znum">Zona 1</span><span class="zname2">Recuperación</span><span class="zbpm">50-60% FCmáx</span><span class="zpct">Muy fácil</span></div>
+    <div class="zdesc2">Trote suave post-gym. Activa circulación sin generar fatiga adicional. Días combinados y domingos.</div>
+    <div class="zfeel2">💬 "Puedo hablar por teléfono sin cortarme"</div>
+  </div>
+  <div class="zone z2">
+    <div class="ztop"><span class="znum">Zona 2</span><span class="zname2">Base Aeróbica</span><span class="zbpm">60-70% FCmáx</span><span class="zpct">Fácil</span></div>
+    <div class="zdesc2">La zona más importante. Construye el motor aeróbico y quema grasa eficientemente. 60-70% de todo el volumen.</div>
+    <div class="zfeel2">💬 "Puedo hablar con frases cortas"</div>
+  </div>
+  <div class="zone z3">
+    <div class="ztop"><span class="znum">Zona 3</span><span class="zname2">Aeróbico Moderado</span><span class="zbpm">70-80% FCmáx</span><span class="zpct">Moderado</span></div>
+    <div class="zdesc2">Final de carrera larga y rodajes progresivos. Usar con moderación, zona de "tierra de nadie".</div>
+    <div class="zfeel2">💬 "Puedo decir pocas palabras"</div>
+  </div>
+  <div class="zone z4">
+    <div class="ztop"><span class="znum">Zona 4</span><span class="zname2">Umbral Láctico</span><span class="zbpm">80-90% FCmáx</span><span class="zpct">Duro</span></div>
+    <div class="zdesc2">Ritmo tempo. Mejora el umbral láctico, clave para sostener ritmo en media maratón. Bloques 8-15 min.</div>
+    <div class="zfeel2">💬 "Solo 1-2 palabras con esfuerzo"</div>
+  </div>
+  <div class="zone z5">
+    <div class="ztop"><span class="znum">Zona 5</span><span class="zname2">VO₂ Máx</span><span class="zbpm">90-100% FCmáx</span><span class="zpct">Máximo</span></div>
+    <div class="zdesc2">Intervalos cortos 1-5 min. Mejora VO₂ max. Máx 10% del volumen total.</div>
+    <div class="zfeel2">💬 "Imposible hablar"</div>
+  </div>
 </div>
 
-<p class="stitle">Sesiones de carrera — detalle semanal</p>
-<div class="rdg">
-  <div class="rdc">
-    <div class="rdh"><div class="rdot" style="background:var(--orange)"></div><div><div class="rdtitle">Lunes — Recuperación activa</div><div class="rdsub">Post gym · Tarde</div></div></div>
-    <div class="rdb">
-      <div class="rst"><span class="rsl">Distancia</span><span class="rsv">4-6 km</span></div>
-      <div class="rst"><span class="rsl">Duración</span><span class="rsv">25-35 min</span></div>
-      <div class="rst"><span class="rsl">Esfuerzo</span><span class="rsv">Muy cómodo</span></div>
-      <div class="rzp"><span class="rz z1">● Z1</span><span class="rz z2">● Z2</span></div>
-      <div class="rnote">⚠️ Día combinado con Upper A. Solo trote suave, no forzar ritmo. Activa circulación y recupera piernas.</div>
+<p class="sec">Sesiones semanales de carrera</p>
+<div class="rundaylist">
+  <div class="runday">
+    <div class="rundayhead"><div class="rundot" style="background:var(--orange)"></div><div><div class="rundaytitle">Lunes — Recuperación activa</div><div class="rundaysub">Post gym Upper A · Tarde</div></div></div>
+    <div class="rundaybody">
+      <div class="rundayrow"><span>Distancia</span><span>4-6 km</span></div>
+      <div class="rundayrow"><span>Duración</span><span>25-35 min</span></div>
+      <div class="rzones"><span class="rzone rz1">● Z1</span><span class="rzone rz2">● Z2</span></div>
+      <div class="runnote">⚠️ Solo trote suave. No forzar ritmo. Activa circulación post-gym.</div>
     </div>
   </div>
-  <div class="rdc">
-    <div class="rdh"><div class="rdot" style="background:#fbbf24"></div><div><div class="rdtitle">Miércoles — Calidad (Tempo / Intervalos)</div><div class="rdsub">Día fuerte · Solo carrera</div></div></div>
-    <div class="rdb">
-      <div class="rst"><span class="rsl">Distancia</span><span class="rsv">8-12 km</span></div>
-      <div class="rst"><span class="rsl">Duración</span><span class="rsv">50-70 min</span></div>
-      <div class="rst"><span class="rsl">Estructura</span><span class="rsv">Calentamiento + Bloque</span></div>
-      <div class="rzp"><span class="rz z2">● Z2</span><span class="rz z3">● Z3</span><span class="rz z4">● Z4</span></div>
-      <div class="rnote"><strong>Opción A (Tempo):</strong> 2km Z2 → 4×8min Z4 (rec 2min Z2) → 2km Z1.<br><strong>Opción B (Progresivo):</strong> 10km de Z2 a Z3-Z4. Alternar cada semana.</div>
+  <div class="runday">
+    <div class="rundayhead"><div class="rundot" style="background:#fbbf24"></div><div><div class="rundaytitle">Miércoles — Calidad (Tempo)</div><div class="rundaysub">Día fuerte · Solo carrera</div></div></div>
+    <div class="rundaybody">
+      <div class="rundayrow"><span>Distancia</span><span>8-12 km</span></div>
+      <div class="rundayrow"><span>Duración</span><span>50-70 min</span></div>
+      <div class="rzones"><span class="rzone rz2">● Z2</span><span class="rzone rz3">● Z3</span><span class="rzone rz4">● Z4</span></div>
+      <div class="runnote"><strong>Opción A:</strong> 2km Z2 → 4×8min Z4 (rec 2min) → 2km Z1.<br><strong>Opción B:</strong> 10km progresivo Z2 a Z3-Z4.</div>
     </div>
   </div>
-  <div class="rdc">
-    <div class="rdh"><div class="rdot" style="background:var(--green)"></div><div><div class="rdtitle">Viernes — Rodaje suave</div><div class="rdsub">Post gym · Tarde</div></div></div>
-    <div class="rdb">
-      <div class="rst"><span class="rsl">Distancia</span><span class="rsv">5-7 km</span></div>
-      <div class="rst"><span class="rsl">Duración</span><span class="rsv">30-40 min</span></div>
-      <div class="rst"><span class="rsl">Esfuerzo</span><span class="rsv">Fácil-moderado</span></div>
-      <div class="rzp"><span class="rz z2">● Z2</span></div>
-      <div class="rnote">⚠️ Día combinado con Lower B. Mantener Z2 estrictamente. Activación antes de la larga del sábado.</div>
+  <div class="runday">
+    <div class="rundayhead"><div class="rundot" style="background:var(--green)"></div><div><div class="rundaytitle">Viernes — Rodaje suave</div><div class="rundaysub">Post gym Lower B · Tarde</div></div></div>
+    <div class="rundaybody">
+      <div class="rundayrow"><span>Distancia</span><span>5-7 km</span></div>
+      <div class="rundayrow"><span>Duración</span><span>30-40 min</span></div>
+      <div class="rzones"><span class="rzone rz2">● Z2</span></div>
+      <div class="runnote">⚠️ Activación antes de la larga del sábado. No vaciar las piernas.</div>
     </div>
   </div>
-  <div class="rdc">
-    <div class="rdh"><div class="rdot" style="background:#f43f5e"></div><div><div class="rdtitle">Sábado — Carrera Larga</div><div class="rdsub">Sesión clave · Fondo</div></div></div>
-    <div class="rdb">
-      <div class="rst"><span class="rsl">Distancia</span><span class="rsv">12-20 km</span></div>
-      <div class="rst"><span class="rsl">Duración</span><span class="rsv">75-130 min</span></div>
-      <div class="rst"><span class="rsl">Esfuerzo</span><span class="rsv">Conversacional</span></div>
-      <div class="rzp"><span class="rz z2">● Z2</span><span class="rz z3">● Z3</span></div>
-      <div class="rnote">La sesión más importante de la semana. Construye resistencia base. Últimos 2-3 km puedes subir a Z3. Aumenta ~10% cada semana.</div>
+  <div class="runday">
+    <div class="rundayhead"><div class="rundot" style="background:#f43f5e"></div><div><div class="rundaytitle">Sábado — Carrera Larga</div><div class="rundaysub">Sesión clave · Fondo</div></div></div>
+    <div class="rundaybody">
+      <div class="rundayrow"><span>Distancia</span><span>12-20 km</span></div>
+      <div class="rundayrow"><span>Duración</span><span>75-130 min</span></div>
+      <div class="rzones"><span class="rzone rz2">● Z2</span><span class="rzone rz3">● Z3</span></div>
+      <div class="runnote">La sesión más importante. Últimos 2-3 km puedes subir a Z3. Aumenta ~10% cada semana.</div>
     </div>
   </div>
-  <div class="rdc">
-    <div class="rdh"><div class="rdot" style="background:#60a5fa"></div><div><div class="rdtitle">Domingo — Recuperación</div><div class="rdsub">Rodaje regenerativo</div></div></div>
-    <div class="rdb">
-      <div class="rst"><span class="rsl">Distancia</span><span class="rsv">4-6 km</span></div>
-      <div class="rst"><span class="rsl">Duración</span><span class="rsv">25-35 min</span></div>
-      <div class="rst"><span class="rsl">Esfuerzo</span><span class="rsv">Muy suave</span></div>
-      <div class="rzp"><span class="rz z1">● Z1</span></div>
-      <div class="rnote">Trote regenerativo post-carrera larga. Si hay dolor o fatiga excesiva, reemplazar por caminata o descanso total.</div>
+  <div class="runday">
+    <div class="rundayhead"><div class="rundot" style="background:#60a5fa"></div><div><div class="rundaytitle">Domingo — Recuperación</div><div class="rundaysub">Rodaje regenerativo</div></div></div>
+    <div class="rundaybody">
+      <div class="rundayrow"><span>Distancia</span><span>4-6 km</span></div>
+      <div class="rundayrow"><span>Duración</span><span>25-35 min</span></div>
+      <div class="rzones"><span class="rzone rz1">● Z1</span></div>
+      <div class="runnote">Trote muy suave. Si hay fatiga excesiva, reemplazar por caminata o descanso total.</div>
     </div>
   </div>
 </div>
 
-<!-- KM TABLE -->
-<div class="kw">
-  <div class="kwh"><h2>📅 Progresión — 16 semanas</h2><span class="kwtb">21K</span></div>
-  <div class="kw-scroll"><table>
-    <thead><tr><th>Semana</th><th>Km totales</th><th>Lun</th><th>Mié</th><th>Vie</th><th>Sáb (larga)</th><th>Dom</th><th>Fase</th><th>Notas</th></tr></thead>
+<p class="sec">Progresión 16 semanas</p>
+<div class="kmcard">
+  <div class="kmhead"><span class="kmtitle">📅 Kilometraje semanal</span><span class="kmbadge">🏁 21K</span></div>
+  <div class="kmscroll"><table>
+    <thead><tr><th>Sem</th><th>Total</th><th>Lun</th><th>Mié</th><th>Vie</th><th>Sáb</th><th>Dom</th><th>Fase</th></tr></thead>
     <tbody>
-      <tr class="kr"><td>1</td><td class="kk">28 km</td><td>5</td><td>8</td><td>5</td><td>12</td><td>4</td><td><span class="ph ph-b">Base</span></td><td class="knt">Establecer base, calibrar zonas</td></tr>
-      <tr class="kr"><td>2</td><td class="kk">30 km</td><td>5</td><td>9</td><td>6</td><td>13</td><td>5</td><td><span class="ph ph-b">Base</span></td><td class="knt">Intro tempo corto el miércoles</td></tr>
-      <tr class="kr"><td>3</td><td class="kk">33 km</td><td>5</td><td>10</td><td>6</td><td>15</td><td>5</td><td><span class="ph ph-b">Base</span></td><td class="knt">Primera larga de 15 km</td></tr>
-      <tr class="kr"><td style="color:var(--purple);font-weight:700">4 ↓</td><td class="kk" style="color:var(--purple)">24 km</td><td>4</td><td>7</td><td>5</td><td>10</td><td>4</td><td><span class="ph ph-t">Descarga</span></td><td class="knt">⚡ Semana de descarga −25%</td></tr>
-      <tr class="kr"><td>5</td><td class="kk">35 km</td><td>5</td><td>11</td><td>6</td><td>16</td><td>5</td><td><span class="ph ph-d">Build</span></td><td class="knt">Inicio fase construcción</td></tr>
-      <tr class="kr"><td>6</td><td class="kk">37 km</td><td>6</td><td>11</td><td>6</td><td>17</td><td>5</td><td><span class="ph ph-d">Build</span></td><td class="knt">Tempo 4×8min + larga progresiva</td></tr>
-      <tr class="kr"><td>7</td><td class="kk">40 km</td><td>6</td><td>12</td><td>7</td><td>18</td><td>6</td><td><span class="ph ph-d">Build</span></td><td class="knt">Primera larga de 18 km</td></tr>
-      <tr class="kr"><td style="color:var(--purple);font-weight:700">8 ↓</td><td class="kk" style="color:var(--purple)">28 km</td><td>5</td><td>8</td><td>5</td><td>13</td><td>5</td><td><span class="ph ph-t">Descarga</span></td><td class="knt">⚡ Semana de descarga −30%</td></tr>
-      <tr class="kr"><td>9</td><td class="kk">42 km</td><td>6</td><td>13</td><td>7</td><td>19</td><td>6</td><td><span class="ph ph-d">Build</span></td><td class="knt">Intervalos Z4-Z5 el miércoles</td></tr>
-      <tr class="kr"><td>10</td><td class="kk">44 km</td><td>6</td><td>13</td><td>7</td><td>20</td><td>6</td><td><span class="ph ph-p">Pico</span></td><td class="knt">Larga de 20 km — punto máximo</td></tr>
-      <tr class="kr"><td>11</td><td class="kk">46 km</td><td>6</td><td>14</td><td>8</td><td>20</td><td>6</td><td><span class="ph ph-p">Pico</span></td><td class="knt">Semana de mayor carga total</td></tr>
-      <tr class="kr"><td style="color:var(--purple);font-weight:700">12 ↓</td><td class="kk" style="color:var(--purple)">32 km</td><td>5</td><td>9</td><td>6</td><td>14</td><td>5</td><td><span class="ph ph-t">Descarga</span></td><td class="knt">⚡ Descarga obligatoria</td></tr>
-      <tr class="kr"><td>13</td><td class="kk">44 km</td><td>6</td><td>13</td><td>7</td><td>19</td><td>6</td><td><span class="ph ph-p">Pico</span></td><td class="knt">Mantener ritmo de media maratón</td></tr>
-      <tr class="kr"><td>14</td><td class="kk">38 km</td><td>5</td><td>11</td><td>6</td><td>16</td><td>5</td><td><span class="ph ph-t">Taper</span></td><td class="knt">Inicio del taper — bajar volumen</td></tr>
-      <tr class="kr"><td>15</td><td class="kk">28 km</td><td>5</td><td>8</td><td>5</td><td>12</td><td>4</td><td><span class="ph ph-t">Taper</span></td><td class="knt">Mantener intensidad, bajar km</td></tr>
-      <tr class="kr"><td style="color:var(--green);font-weight:800">16 🏁</td><td class="kk">21 km</td><td>3</td><td>5</td><td>—</td><td colspan="2" style="text-align:center;font-weight:700;color:var(--green)">🏁 MEDIA MARATÓN</td><td><span class="ph ph-t">Carrera</span></td><td class="knt">¡A disfrutar el resultado!</td></tr>
+      <tr><td>1</td><td class="kmkm">28km</td><td>5</td><td>8</td><td>5</td><td>12</td><td>4</td><td><span class="ph ph-b">Base</span></td></tr>
+      <tr><td>2</td><td class="kmkm">30km</td><td>5</td><td>9</td><td>6</td><td>13</td><td>5</td><td><span class="ph ph-b">Base</span></td></tr>
+      <tr><td>3</td><td class="kmkm">33km</td><td>5</td><td>10</td><td>6</td><td>15</td><td>5</td><td><span class="ph ph-b">Base</span></td></tr>
+      <tr style="color:var(--purple)"><td><b>4↓</b></td><td class="kmkm" style="color:var(--purple)">24km</td><td>4</td><td>7</td><td>5</td><td>10</td><td>4</td><td><span class="ph ph-t">Desc.</span></td></tr>
+      <tr><td>5</td><td class="kmkm">35km</td><td>5</td><td>11</td><td>6</td><td>16</td><td>5</td><td><span class="ph ph-d">Build</span></td></tr>
+      <tr><td>6</td><td class="kmkm">37km</td><td>6</td><td>11</td><td>6</td><td>17</td><td>5</td><td><span class="ph ph-d">Build</span></td></tr>
+      <tr><td>7</td><td class="kmkm">40km</td><td>6</td><td>12</td><td>7</td><td>18</td><td>6</td><td><span class="ph ph-d">Build</span></td></tr>
+      <tr style="color:var(--purple)"><td><b>8↓</b></td><td class="kmkm" style="color:var(--purple)">28km</td><td>5</td><td>8</td><td>5</td><td>13</td><td>5</td><td><span class="ph ph-t">Desc.</span></td></tr>
+      <tr><td>9</td><td class="kmkm">42km</td><td>6</td><td>13</td><td>7</td><td>19</td><td>6</td><td><span class="ph ph-d">Build</span></td></tr>
+      <tr><td>10</td><td class="kmkm">44km</td><td>6</td><td>13</td><td>7</td><td>20</td><td>6</td><td><span class="ph ph-p">Pico</span></td></tr>
+      <tr><td>11</td><td class="kmkm">46km</td><td>6</td><td>14</td><td>8</td><td>20</td><td>6</td><td><span class="ph ph-p">Pico</span></td></tr>
+      <tr style="color:var(--purple)"><td><b>12↓</b></td><td class="kmkm" style="color:var(--purple)">32km</td><td>5</td><td>9</td><td>6</td><td>14</td><td>5</td><td><span class="ph ph-t">Desc.</span></td></tr>
+      <tr><td>13</td><td class="kmkm">44km</td><td>6</td><td>13</td><td>7</td><td>19</td><td>6</td><td><span class="ph ph-p">Pico</span></td></tr>
+      <tr><td>14</td><td class="kmkm">38km</td><td>5</td><td>11</td><td>6</td><td>16</td><td>5</td><td><span class="ph ph-t">Taper</span></td></tr>
+      <tr><td>15</td><td class="kmkm">28km</td><td>5</td><td>8</td><td>5</td><td>12</td><td>4</td><td><span class="ph ph-t">Taper</span></td></tr>
+      <tr style="color:var(--green)"><td><b>16🏁</b></td><td class="kmkm" style="color:var(--green)">21km</td><td>3</td><td>5</td><td>—</td><td colspan="2" style="text-align:center;font-weight:700">🏁 CARRERA</td><td><span class="ph ph-t">Race</span></td></tr>
     </tbody>
   </table></div>
 </div>
 
-<!-- PACE -->
-<p class="stitle">Ritmos de referencia por zona</p>
-<p class="hint">Ajusta según tu nivel. Usa el test de conversación o monitor de FC como referencia principal.</p>
-<div class="pg">
-  <div class="pc"><div class="plb" style="color:#60a5fa">Zona 1 — Recuperación</div><div class="pv" style="color:#60a5fa">+7:30 /km</div><div class="pd">Trote muy lento. Días post-gym o domingo.</div></div>
-  <div class="pc"><div class="plb" style="color:#34d399">Zona 2 — Base aeróbica</div><div class="pv" style="color:#34d399">6:00-7:00 /km</div><div class="pd">La mayoría del entrenamiento. "Podría correr horas".</div></div>
-  <div class="pc"><div class="plb" style="color:#fbbf24">Zona 3 — Moderado</div><div class="pv" style="color:#fbbf24">5:15-6:00 /km</div><div class="pd">Final de carrera larga o rodajes progresivos.</div></div>
-  <div class="pc"><div class="plb" style="color:#f97316">Zona 4 — Umbral tempo</div><div class="pv" style="color:#f97316">4:45-5:15 /km</div><div class="pd">Ritmo objetivo media maratón. Bloques de 8-15 min.</div></div>
-  <div class="pc"><div class="plb" style="color:#f43f5e">Zona 5 — Intervalos</div><div class="pv" style="color:#f43f5e">&lt;4:45 /km</div><div class="pd">Series 1-3 min máx. Solo 1 vez cada 2 semanas.</div></div>
-  <div class="pc"><div class="plb" style="color:var(--green)">🏁 Objetivo 21K</div><div class="pv" style="color:var(--green)">5:00-5:30 /km</div><div class="pd">Terminar en ~1:45-1:55 h. Ritmo sostenible Z3-Z4.</div></div>
+<p class="sec">Ritmos de referencia</p>
+<div class="pacegrid">
+  <div class="pacecard"><div class="pacelabel" style="color:#60a5fa">Zona 1</div><div class="paceval" style="color:#60a5fa">+7:30/km</div><div class="pacedesc">Recuperación, muy lento</div></div>
+  <div class="pacecard"><div class="pacelabel" style="color:#34d399">Zona 2</div><div class="paceval" style="color:#34d399">6:00-7:00</div><div class="pacedesc">Base aeróbica, mayoría</div></div>
+  <div class="pacecard"><div class="pacelabel" style="color:#fbbf24">Zona 3</div><div class="paceval" style="color:#fbbf24">5:15-6:00</div><div class="pacedesc">Final de largas</div></div>
+  <div class="pacecard"><div class="pacelabel" style="color:#f97316">Zona 4</div><div class="paceval" style="color:#f97316">4:45-5:15</div><div class="pacedesc">Tempo, umbral</div></div>
+  <div class="pacecard"><div class="pacelabel" style="color:#f43f5e">Zona 5</div><div class="paceval" style="color:#f43f5e">&lt;4:45/km</div><div class="pacedesc">Intervalos máximos</div></div>
+  <div class="pacecard"><div class="pacelabel" style="color:var(--green)">🏁 21K</div><div class="paceval" style="color:var(--green)">5:00-5:30</div><div class="pacedesc">Meta: 1:45-1:55h</div></div>
 </div>
 
-<p class="stitle">Principios clave — Carrera</p>
-<div class="tg">
-  <div class="tc2"><h3 style="color:var(--green)">🎯 Regla 80/20</h3><ul>
-    <li>80% del volumen en Zona 1-2 (fácil)</li><li>Solo 20% en Zona 3-5 (intensidad)</li>
-    <li>Error común: correr todo a ritmo medio</li><li>Lo fácil MUY fácil, lo difícil MUY difícil</li>
+<p class="sec">Principios clave</p>
+<div class="tipgrid">
+  <div class="tipcard"><div class="tiptitle" style="color:var(--green)">🎯 Regla 80/20</div><ul class="tiplist">
+    <li>80% del volumen en Zona 1-2 (fácil)</li>
+    <li>Solo 20% en Zona 3-5 (intensidad)</li>
+    <li>Lo fácil MUY fácil, lo difícil MUY difícil</li>
+    <li>Error común: correr todo a ritmo medio</li>
   </ul></div>
-  <div class="tc2"><h3 style="color:#fbbf24">📏 Regla del 10%</h3><ul>
-    <li>No aumentar km semanales más del 10%</li><li>Descarga cada 3-4 semanas (−25 a −30%)</li>
-    <li>La larga no debe superar 35% del total semanal</li><li>Ante cualquier dolor, reducir inmediatamente</li>
+  <div class="tipcard"><div class="tiptitle" style="color:#fbbf24">📏 Regla del 10%</div><ul class="tiplist">
+    <li>No aumentar km semanales más del 10%</li>
+    <li>Descarga cada 3-4 semanas (−25 a −30%)</li>
+    <li>La larga no supera 35% del total semanal</li>
+    <li>Ante cualquier dolor, reducir inmediatamente</li>
   </ul></div>
-  <div class="tc2"><h3 style="color:#f43f5e">⚡ Interferencia gym-carrera</h3><ul>
-    <li>Lower A (mar) antes del mié de calidad: correcto</li><li>Lower B (vie) antes de la larga (sáb): moderar</li>
-    <li>Nunca intervalos Z5 el día post-lower pesado</li><li>Miércoles: único día para calidad máxima</li>
+  <div class="tipcard"><div class="tiptitle" style="color:#f43f5e">⚡ Interferencia gym-carrera</div><ul class="tiplist">
+    <li>Lower A (mar) antes del mié de calidad: OK</li>
+    <li>Lower B (vie) antes de la larga (sáb): moderar</li>
+    <li>Nunca intervalos Z5 el día post-lower pesado</li>
+    <li>Miércoles: único día para calidad máxima</li>
   </ul></div>
-  <div class="tc2"><h3 style="color:var(--purple)">🔧 Herramientas</h3><ul>
-    <li>Monitor de FC: esencial para respetar zonas</li><li>Apps: Strava, Garmin Connect, Nike Run Club</li>
-    <li>Foam roller y estiramientos post-carrera siempre</li><li>Gel o isotónico cada 45 min en la larga</li>
+  <div class="tipcard"><div class="tiptitle" style="color:var(--purple)">🔧 Herramientas</div><ul class="tiplist">
+    <li>Monitor de FC: esencial para respetar zonas</li>
+    <li>Apps: Strava, Garmin Connect, Nike Run Club</li>
+    <li>Foam roller y estiramientos post-carrera</li>
+    <li>Gel o isotónico cada 45 min en la larga</li>
   </ul></div>
 </div>
 
 </main>
 </div>
 
-<footer>Upper/Lower 4 días + Plan Media Maratón 16 semanas · Nivel Intermedio · Hover sobre ejercicios para ver imágenes de referencia</footer>
+<!-- Desktop hover preview -->
+<div id="hoverpreview" class="hoverpreview">
+  <img id="hp-img" src="" alt="">
+  <div class="hpbody">
+    <div id="hp-name" class="hpname"></div>
+    <div id="hp-tip" class="hptip"></div>
+    <div class="hpyt">▶ Toca para abrir en YouTube</div>
+  </div>
+</div>
 
-<!-- SCRIPTS -->
+<!-- Bottom nav -->
+<nav class="bottomnav">
+  <button class="navbtn active-gym" id="nav-gym" onclick="switchTab('gym')"><span>🏋️</span>Gimnasio</button>
+  <button class="navbtn" id="nav-run" onclick="switchTab('run')"><span>🏃</span>Carrera</button>
+</nav>
+
 <script>
 // ── Tab switching
-function show(id,btn,cls){
-  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('show'));
-  document.querySelectorAll('.tab').forEach(t=>{t.className='tab';});
-  document.querySelectorAll('.bnav-btn').forEach(b=>{b.className='bnav-btn';});
-  document.getElementById(id).classList.add('show');
-  btn.classList.add(cls);
-  const map={gym:'act-b',run:'act-g'};
-  document.querySelectorAll('.bnav-btn').forEach(b=>{
-    if(b.dataset.tab===id) b.classList.add('act'+(id==='run'?' run':''));
-  });
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function showFromNav(id){
-  const map={gym:'act-b',run:'act-g'};
-  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('show'));
-  document.querySelectorAll('.tab').forEach(t=>{t.className='tab';});
-  document.querySelectorAll('.bnav-btn').forEach(b=>{b.className='bnav-btn'+(b.dataset.tab===id?' act'+(id==='run'?' run':''):'');});
-  document.getElementById(id).classList.add('show');
-  const tabBtn=document.querySelector('.tab[onclick*="''+id+''"]');
-  if(tabBtn) tabBtn.classList.add(map[id]);
-  window.scrollTo({top:0,behavior:'smooth'});
+function switchTab(id) {
+  document.querySelectorAll('.tabpanel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tabBtn-gym, .tabBtn-run, .tabBtn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelector('.tabBtn-' + id).classList.add('active');
+  document.getElementById('nav-gym').className = 'navbtn' + (id==='gym' ? ' active-gym' : '');
+  document.getElementById('nav-run').className = 'navbtn' + (id==='run' ? ' active-run' : '');
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 // ── Exercise expand / collapse
-let currentOpen = null;
-function toggleEx(id){
+let openEx = null;
+function toggleEx(id) {
   const el = document.getElementById(id);
-  if(currentOpen && currentOpen !== id){
-    const prev = document.getElementById(currentOpen);
-    if(prev){
-      prev.classList.remove('open');
-      // stop any playing video inside it
-      prev.querySelectorAll('iframe').forEach(f=>{ f.src=''; f.style.display='none'; });
-      prev.querySelectorAll('.video-preview-wrap').forEach(w=>w.classList.remove('playing'));
-      prev.querySelectorAll('.video-overlay').forEach(o=>o.style.display='');
-    }
+  if (openEx && openEx !== id) {
+    document.getElementById(openEx).classList.remove('open');
   }
   el.classList.toggle('open');
-  currentOpen = el.classList.contains('open') ? id : null;
-  if(!el.classList.contains('open')){
-    el.querySelectorAll('iframe').forEach(f=>{ f.src=''; f.style.display='none'; });
-    el.querySelectorAll('.video-preview-wrap').forEach(w=>w.classList.remove('playing'));
-    el.querySelectorAll('.video-overlay').forEach(o=>o.style.display='');
+  openEx = el.classList.contains('open') ? id : null;
+  if (el.classList.contains('open')) {
+    setTimeout(() => el.scrollIntoView({behavior:'smooth', block:'nearest'}), 130);
   }
 }
 
-// ── Play video inline
-function playVideo(vidId){
-  const wrap = document.getElementById('vpw-'+vidId);
-  const iframe = document.getElementById('iframe-'+vidId);
-  iframe.src = 'https://www.youtube.com/embed/'+vidId+'?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1';
-  iframe.style.display = 'block';
-  wrap.classList.add('playing');
-}
+// ── Desktop hover preview
+const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+if (!isTouch) {
+  const box = document.getElementById('hoverpreview');
+  const hpImg = document.getElementById('hp-img');
+  const hpName = document.getElementById('hp-name');
+  const hpTip = document.getElementById('hp-tip');
+  let timer = null;
 
-// ── Desktop hover preview (only on non-touch devices)
-const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-if(!isTouchDevice){
-  const preview = document.getElementById('desktop-preview');
-  const dIframe = document.getElementById('desktop-iframe');
-  let hoverTimer = null;
-  let currentHoverId = null;
+  document.querySelectorAll('.exrow').forEach(row => {
+    const item = row.closest('.exitem');
+    if (!item) return;
+    const thumb = item.querySelector('.exthumb');
+    const nameEl = item.querySelector('.exname');
+    const tipEl = item.querySelector('.extip');
 
-  document.querySelectorAll('.ex-row').forEach(row => {
-    const item = row.closest('.ex-item');
-    const wrap = item ? item.querySelector('.video-preview-wrap') : null;
-    if(!wrap) return;
-    const wpwId = wrap.id; // e.g. vpw-vcBig73ojpE
-    const vidId = wpwId.replace('vpw-','');
-
-    row.addEventListener('mouseenter', function(e){
-      hoverTimer = setTimeout(()=>{
-        currentHoverId = vidId;
-        dIframe.src = 'https://www.youtube.com/embed/'+vidId+'?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&loop=1&playlist='+vidId+'&start=0';
-        preview.classList.add('visible');
-        posPreview(e);
-      }, 400);
+    row.addEventListener('mouseenter', e => {
+      timer = setTimeout(() => {
+        hpImg.src = thumb ? thumb.src : '';
+        hpName.textContent = nameEl ? nameEl.textContent : '';
+        hpTip.textContent = tipEl ? tipEl.textContent.replace('💡 ','') : '';
+        box.classList.add('show');
+        movePreview(e);
+      }, 280);
     });
-
-    row.addEventListener('mousemove', posPreview);
-
-    row.addEventListener('mouseleave', function(){
-      clearTimeout(hoverTimer);
-      preview.classList.remove('visible');
-      dIframe.src='';
-      currentHoverId = null;
+    row.addEventListener('mousemove', movePreview);
+    row.addEventListener('mouseleave', () => {
+      clearTimeout(timer);
+      box.classList.remove('show');
     });
   });
 
-  function posPreview(e){
-    const pw=280, ph=158;
-    let x = e.clientX + 18;
-    let y = e.clientY - 80;
-    if(x + pw > window.innerWidth - 10) x = e.clientX - pw - 18;
-    if(y + ph > window.innerHeight - 10) y = window.innerHeight - ph - 10;
-    if(y < 10) y = 10;
-    preview.style.left = x+'px';
-    preview.style.top  = y+'px';
+  function movePreview(e) {
+    const pw = 240, ph = 210;
+    let x = e.clientX + 16, y = e.clientY - 105;
+    if (x + pw > window.innerWidth - 8) x = e.clientX - pw - 16;
+    if (y + ph > window.innerHeight - 8) y = window.innerHeight - ph - 8;
+    if (y < 8) y = 8;
+    box.style.left = x + 'px';
+    box.style.top = y + 'px';
   }
 }
 </script>
-
-<nav class="bottom-nav">
-  <button class="bnav-btn act" data-tab="gym" onclick="showFromNav('gym')">
-    <span>🏋️</span>Gimnasio
-  </button>
-  <button class="bnav-btn" data-tab="run" onclick="showFromNav('run')">
-    <span>🏃</span>Carrera
-  </button>
-</nav>
-
-<div id="desktop-preview" class="desktop-preview">
-  <iframe id="desktop-iframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-</div>
 </body>
 </html>
