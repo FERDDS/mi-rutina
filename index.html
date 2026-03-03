@@ -193,6 +193,8 @@ main{max-width:600px;margin:0 auto;padding:20px 14px 90px;}
 }
 
 /* ── GYM SUB-TABS ── */
+.gymsubtabpanel { display: none; }
+.gymsubtabpanel.active { display: block; }
 .gymsubtabs {
   display: flex;
   background: rgba(255,255,255,.03);
@@ -268,7 +270,7 @@ main{max-width:600px;margin:0 auto;padding:20px 14px 90px;}
   <button class="gymsubtab act-ul" id="st-ul" onclick="switchGymSub('ul')">🏋️ Upper / Lower</button>
   <button class="gymsubtab" id="st-fb" onclick="switchGymSub('fb')">🔄 Full Body</button>
 </div>
-<div id="gymtab-ul" class="gymsubtabpanel">
+<div id="gymtab-ul" class="gymsubtabpanel active">
 <main>
 
 <p class="sec">Distribución semanal</p>
@@ -916,7 +918,7 @@ main{max-width:600px;margin:0 auto;padding:20px 14px 90px;}
 </div><!-- end gymtab-ul -->
 
 
-<div id="gymtab-fb" class="gymsubtabpanel" style="display:none">
+<div id="gymtab-fb" class="gymsubtabpanel">
 <main>
 
 <p class="sec">¿Por qué Full Body?</p>
@@ -1801,13 +1803,10 @@ if (!isTouch) {
 
 // ── Gym sub-tab switching
 function switchGymSub(id) {
-  document.querySelectorAll('.gymsubtabpanel').forEach(p => p.style.display = 'none');
-  document.querySelectorAll('.gymsubtab').forEach(b => {
-    b.classList.remove('act-ul', 'act-fb');
-  });
-  document.getElementById('gymtab-' + id).style.display = 'block';
-  const btn = document.getElementById('st-' + id);
-  btn.classList.add(id === 'ul' ? 'act-ul' : 'act-fb');
+  document.querySelectorAll('.gymsubtabpanel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.gymsubtab').forEach(b => b.classList.remove('act-ul', 'act-fb'));
+  document.getElementById('gymtab-' + id).classList.add('active');
+  document.getElementById('st-' + id).classList.add(id === 'ul' ? 'act-ul' : 'act-fb');
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
