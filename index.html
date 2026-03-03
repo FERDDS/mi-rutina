@@ -191,6 +191,55 @@ main{max-width:600px;margin:0 auto;padding:20px 14px 90px;}
   .hptip{font-size:.68rem;color:var(--muted);line-height:1.4;}
   .hpyt{font-size:.65rem;color:#f00;margin-top:5px;}
 }
+
+/* ── GYM SUB-TABS ── */
+.gymsubtabs {
+  display: flex;
+  background: rgba(255,255,255,.03);
+  border-bottom: 1px solid var(--border);
+  padding: 0 14px;
+  gap: 4px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.gymsubtab {
+  padding: 10px 14px;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  white-space: nowrap;
+  transition: all .18s;
+}
+.gymsubtab.act-ul { color: var(--blue); border-bottom-color: var(--blue); }
+.gymsubtab.act-fb { color: var(--purple); border-bottom-color: var(--purple); }
+
+/* Full Body why-section */
+.fbwhy { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+.fbwhy-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 13px 14px;
+}
+.fbwhy-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+.fbwhy-item strong { font-size: .82rem; display: block; margin-bottom: 3px; }
+.fbwhy-item span { font-size: .72rem; color: var(--muted); line-height: 1.5; }
+
+/* Source note inside workout card */
+.fbnote {
+  font-size: .7rem;
+  color: var(--muted);
+  background: rgba(167,139,250,.07);
+  border-left: 2px solid var(--purple);
+  padding: 7px 12px;
+  margin: 0;
+  line-height: 1.5;
+}
+
 </style>
 </head>
 <body>
@@ -214,6 +263,12 @@ main{max-width:600px;margin:0 auto;padding:20px 14px 90px;}
 
 <!-- ══ GYM TAB ══ -->
 <div id="tab-gym" class="tabpanel active">
+<!-- Gym sub-tabs -->
+<div class="gymsubtabs">
+  <button class="gymsubtab act-ul" id="st-ul" onclick="switchGymSub('ul')">🏋️ Upper / Lower</button>
+  <button class="gymsubtab" id="st-fb" onclick="switchGymSub('fb')">🔄 Full Body</button>
+</div>
+<div id="gymtab-ul" class="gymsubtabpanel">
 <main>
 
 <p class="sec">Distribución semanal</p>
@@ -857,7 +912,658 @@ main{max-width:600px;margin:0 auto;padding:20px 14px 90px;}
 </div>
 
 </main>
+</main>
+</div><!-- end gymtab-ul -->
+
+
+<div id="gymtab-fb" class="gymsubtabpanel" style="display:none">
+<main>
+
+<p class="sec">¿Por qué Full Body?</p>
+<div class="fbwhy">
+  <div class="fbwhy-item">
+    <span class="fbwhy-icon">🔬</span>
+    <div><strong>Mayor frecuencia = más señal anabólica</strong><br><span>Cada músculo se estimula 3-4×/semana. La síntesis proteica muscular vuelve a la línea base en ~24-48h en intermedios-avanzados (Nippard, 2019).</span></div>
+  </div>
+  <div class="fbwhy-item">
+    <span class="fbwhy-icon">📊</span>
+    <div><strong>Volumen distribuido = mayor calidad</strong><br><span>Per-session limit ~5-10 series por músculo (Krieger). Menos fatiga acumulada → mejor ejecución en cada serie.</span></div>
+  </div>
+  <div class="fbwhy-item">
+    <span class="fbwhy-icon">⚡</span>
+    <div><strong>Ideal para atletas concurrentes</strong><br><span>Menos series por sesión → menor interferencia con el entrenamiento de carrera. Compatible con carga aeróbica alta.</span></div>
+  </div>
 </div>
+
+<p class="sec">Distribución semanal</p>
+<div class="weekgrid">
+  <div class="daycell gym"><div class="dayname">Lun</div><span class="dayicon">🦵</span><div class="daylabel">FB Día 1 Piernas</div><span class="daybadge badge-g">Gym</span></div>
+  <div class="daycell gym"><div class="dayname">Mar</div><span class="dayicon">💪</span><div class="daylabel">FB Día 2 Pecho</div><span class="daybadge badge-g">Gym</span></div>
+  <div class="daycell run"><div class="dayname">Mié</div><span class="dayicon">🏃</span><div class="daylabel">Carrera calidad</div><span class="daybadge badge-r">Carrera</span></div>
+  <div class="daycell gym"><div class="dayname">Jue</div><span class="dayicon">🔙</span><div class="daylabel">FB Día 3 Espalda</div><span class="daybadge badge-g">Gym</span></div>
+  <div class="daycell gym"><div class="dayname">Vie</div><span class="dayicon">⚡</span><div class="daylabel">FB Día 4 Fuerza</div><span class="daybadge badge-g">Gym</span></div>
+  <div class="daycell run"><div class="dayname">Sáb</div><span class="dayicon">🏃</span><div class="daylabel">Carrera larga</div><span class="daybadge badge-r">Carrera</span></div>
+  <div class="daycell run"><div class="dayname">Dom</div><span class="dayicon">🚶</span><div class="daylabel">Recuperación</div><span class="daybadge badge-r">Suave</span></div>
+</div>
+
+<p class="sec">Sesiones Full Body</p>
+<p class="hint">Toca cada ejercicio para ver imagen y video de referencia 👆 · RPE = esfuerzo percibido (8 = 2 reps en reserva)</p>
+<div class="workcards">
+
+  <div class="wcard">
+    <div class="whead">
+      <div class="wicon wi-b">🦵</div>
+      <div><div class="wtitle">FB Día 1 — Foco Piernas/Cuáds</div><div class="wsub">Lunes · Squat como movimiento principal</div></div>
+    </div>
+    <div class="fbnote">📖 Basado en Nippard High Frequency FB — Block 1, Day 1. Cada sesión arranca con un compound pesado y llena con secundarios/terciarios.</div>
+    <ul class="exlist">
+      <li class="exitem" id="fb1-0">
+        <div class="exrow" onclick="toggleEx('fb1-0')">
+          <img class="exthumb" src="https://img.youtube.com/vi/ultWZbUMPL8/mqdefault.jpg" alt="Sentadilla trasera (barra)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Sentadilla trasera (barra)</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 4 @ 82.5%1RM</span>
+              <span class="exrest">⏱ 3 min</span>
+              <span class="exmusc">Cuáds · Glúteos</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/ultWZbUMPL8/mqdefault.jpg" alt="Sentadilla trasera (barra)">
+          <p class="extip">💡 Siéntate atrás y abajo, dedos 15° hacia afuera, rodillas hacia afuera</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=ultWZbUMPL8" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb1-1">
+        <div class="exrow" onclick="toggleEx('fb1-1')">
+          <img class="exthumb" src="https://img.youtube.com/vi/8iPEnn-ltC8/mqdefault.jpg" alt="Press inclinado mancuernas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Press inclinado mancuernas</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 8 RPE8</span>
+              <span class="exrest">⏱ 2-3 min</span>
+              <span class="exmusc">Pecho sup.</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/8iPEnn-ltC8/mqdefault.jpg" alt="Press inclinado mancuernas">
+          <p class="extip">💡 ~45° de inclinación, conexión mente-músculo con pec superior</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=8iPEnn-ltC8" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb1-2">
+        <div class="exrow" onclick="toggleEx('fb1-2')">
+          <img class="exthumb" src="https://img.youtube.com/vi/1Tq3QdYUuHs/mqdefault.jpg" alt="Curl isquiotibiales acostado" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Curl isquiotibiales acostado</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 10 RPE7</span>
+              <span class="exrest">⏱ 1-2 min</span>
+              <span class="exmusc">Isquiotibiales</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/1Tq3QdYUuHs/mqdefault.jpg" alt="Curl isquiotibiales acostado">
+          <p class="extip">💡 Aprieta los isquios para mover el peso, baja controlado</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=1Tq3QdYUuHs" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb1-3">
+        <div class="exrow" onclick="toggleEx('fb1-3')">
+          <img class="exthumb" src="https://img.youtube.com/vi/CAwf7n6Luuc/mqdefault.jpg" alt="Jalón al pecho agarre prono" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Jalón al pecho agarre prono</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 10 RPE7</span>
+              <span class="exrest">⏱ 2-3 min</span>
+              <span class="exmusc">Espalda · Bíceps</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/CAwf7n6Luuc/mqdefault.jpg" alt="Jalón al pecho agarre prono">
+          <p class="extip">💡 Jala los codos hacia abajo y adentro</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=CAwf7n6Luuc" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb1-4">
+        <div class="exrow" onclick="toggleEx('fb1-4')">
+          <img class="exthumb" src="https://img.youtube.com/vi/kwG2ipFRgfo/mqdefault.jpg" alt="Curl bíceps barra EZ (dropset)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Curl bíceps barra EZ (dropset)</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 15+15 RPE9</span>
+              <span class="exrest">⏱ 1-2 min</span>
+              <span class="exmusc">Bíceps</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/kwG2ipFRgfo/mqdefault.jpg" alt="Curl bíceps barra EZ (dropset)">
+          <p class="extip">💡 Dropset: baja el peso ~50% y continúa. 30 reps totales</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=kwG2ipFRgfo" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb1-5">
+        <div class="exrow" onclick="toggleEx('fb1-5')">
+          <img class="exthumb" src="https://img.youtube.com/vi/hdng3uVAd-Y/mqdefault.jpg" alt="Elevación de piernas colgado" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Elevación de piernas colgado</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 12 RPE7</span>
+              <span class="exrest">⏱ 1-2 min</span>
+              <span class="exmusc">Abdomen</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/hdng3uVAd-Y/mqdefault.jpg" alt="Elevación de piernas colgado">
+          <p class="extip">💡 Rueda las caderas hacia arriba al apretar el abdomen bajo</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=hdng3uVAd-Y" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="wcard">
+    <div class="whead">
+      <div class="wicon wi-p">💪</div>
+      <div><div class="wtitle">FB Día 2 — Foco Pecho/Empuje</div><div class="wsub">Martes · Bench como movimiento principal</div></div>
+    </div>
+    <div class="fbnote">📖 Alta transferencia a fuerza de empuje. Hip Thrust o RDL según prioridad personal (glúteos vs isquios).</div>
+    <ul class="exlist">
+      <li class="exitem" id="fb2-0">
+        <div class="exrow" onclick="toggleEx('fb2-0')">
+          <img class="exthumb" src="https://img.youtube.com/vi/vcBig73ojpE/mqdefault.jpg" alt="Press banca plano (barra)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Press banca plano (barra)</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 3 @ 85%1RM</span>
+              <span class="exrest">⏱ 3-4 min</span>
+              <span class="exmusc">Pecho</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/vcBig73ojpE/mqdefault.jpg" alt="Press banca plano (barra)">
+          <p class="extip">💡 Arco cómodo, pausa 1-2s en el pecho, explotar con máxima fuerza</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=vcBig73ojpE" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb2-1">
+        <div class="exrow" onclick="toggleEx('fb2-1')">
+          <img class="exthumb" src="https://img.youtube.com/vi/Iwe6AmxVf7o/mqdefault.jpg" alt="Aperturas polea baja-alta" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Aperturas polea baja-alta</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 15 RPE8</span>
+              <span class="exrest">⏱ 1-2 min</span>
+              <span class="exmusc">Pecho</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/Iwe6AmxVf7o/mqdefault.jpg" alt="Aperturas polea baja-alta">
+          <p class="extip">💡 Empieza con codos abajo-afuera, jala hacia arriba y adentro</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=Iwe6AmxVf7o" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb2-2">
+        <div class="exrow" onclick="toggleEx('fb2-2')">
+          <img class="exthumb" src="https://img.youtube.com/vi/xDmFkJxPzeM/mqdefault.jpg" alt="Hip Thrust barra / Peso muerto rumano" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Hip Thrust barra / Peso muerto rumano</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 12 RPE7</span>
+              <span class="exrest">⏱ 2-3 min</span>
+              <span class="exmusc">Glúteos · Isquios</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/xDmFkJxPzeM/mqdefault.jpg" alt="Hip Thrust barra / Peso muerto rumano">
+          <p class="extip">💡 Hip Thrust si prioridad glúteos, RDL si prioridad isquios</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=xDmFkJxPzeM" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb2-3">
+        <div class="exrow" onclick="toggleEx('fb2-3')">
+          <img class="exthumb" src="https://img.youtube.com/vi/FWJR5Ve8bnQ/mqdefault.jpg" alt="Remo T-bar con apoyo pecho" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Remo T-bar con apoyo pecho</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 15 RPE7</span>
+              <span class="exrest">⏱ 1-3 min</span>
+              <span class="exmusc">Espalda media</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/FWJR5Ve8bnQ/mqdefault.jpg" alt="Remo T-bar con apoyo pecho">
+          <p class="extip">💡 Protracción completa abajo, retracción arriba</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=FWJR5Ve8bnQ" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb2-4">
+        <div class="exrow" onclick="toggleEx('fb2-4')">
+          <img class="exthumb" src="https://img.youtube.com/vi/6Z15_WdXmVw/mqdefault.jpg" alt="Press Arnold mancuernas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Press Arnold mancuernas</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 10 RPE7</span>
+              <span class="exrest">⏱ 1-3 min</span>
+              <span class="exmusc">Hombros</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/6Z15_WdXmVw/mqdefault.jpg" alt="Press Arnold mancuernas">
+          <p class="extip">💡 Rota las palmas al presionar, pies en palmas abajo → fuera arriba</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=6Z15_WdXmVw" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb2-5">
+        <div class="exrow" onclick="toggleEx('fb2-5')">
+          <img class="exthumb" src="https://img.youtube.com/vi/2-LAMcpzODU/mqdefault.jpg" alt="Extensión tríceps en polea" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Extensión tríceps en polea</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 15 RPE7</span>
+              <span class="exrest">⏱ 1-2 min</span>
+              <span class="exmusc">Tríceps</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/2-LAMcpzODU/mqdefault.jpg" alt="Extensión tríceps en polea">
+          <p class="extip">💡 Aprieta los tríceps para mover el peso</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=2-LAMcpzODU" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb2-6">
+        <div class="exrow" onclick="toggleEx('fb2-6')">
+          <img class="exthumb" src="https://img.youtube.com/vi/qEwKCR5JCog/mqdefault.jpg" alt="Encogimientos barra/máquina" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Encogimientos barra/máquina</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 12 RPE7</span>
+              <span class="exrest">⏱ 1-2 min</span>
+              <span class="exmusc">Trapecios</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/qEwKCR5JCog/mqdefault.jpg" alt="Encogimientos barra/máquina">
+          <p class="extip">💡 Encoge hacia arriba y adentro, hombros hacia las orejas</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=qEwKCR5JCog" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="wcard">
+    <div class="whead">
+      <div class="wicon wi-o">🔙</div>
+      <div><div class="wtitle">FB Día 3 — Foco Espalda/Jale</div><div class="wsub">Jueves · Pull-up lastrado como principal</div></div>
+    </div>
+    <div class="fbnote">📖 Dominiadas con lastre para máximo estímulo del dorsal. Per-session limit ~5-10 sets/músculo (Krieger, Nippard).</div>
+    <ul class="exlist">
+      <li class="exitem" id="fb3-0">
+        <div class="exrow" onclick="toggleEx('fb3-0')">
+          <img class="exthumb" src="https://img.youtube.com/vi/eGo4IYlbE5g/mqdefault.jpg" alt="Dominadas lastradas agarre prono" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Dominadas lastradas agarre prono</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 6 RPE9</span>
+              <span class="exrest">⏱ 2-3 min</span>
+              <span class="exmusc">Espalda · Bíceps</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/eGo4IYlbE5g/mqdefault.jpg" alt="Dominadas lastradas agarre prono">
+          <p class="extip">💡 Agarre 1.5× ancho de hombros, jala el pecho a la barra</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=eGo4IYlbE5g" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb3-1">
+        <div class="exrow" onclick="toggleEx('fb3-1')">
+          <img class="exthumb" src="https://img.youtube.com/vi/FWJR5Ve8bnQ/mqdefault.jpg" alt="Remo T-bar con banda (explosivo)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Remo T-bar con banda (explosivo)</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 10 RPE8</span>
+              <span class="exrest">⏱ 2-3 min</span>
+              <span class="exmusc">Espalda media</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/FWJR5Ve8bnQ/mqdefault.jpg" alt="Remo T-bar con banda (explosivo)">
+          <p class="extip">💡 Explosivo en la fase concéntrica, codos hacia atrás con fuerza</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=FWJR5Ve8bnQ" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb3-2">
+        <div class="exrow" onclick="toggleEx('fb3-2')">
+          <img class="exthumb" src="https://img.youtube.com/vi/IZxyjW7MPJQ/mqdefault.jpg" alt="Prensa de piernas unilateral" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Prensa de piernas unilateral</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 15 RPE8</span>
+              <span class="exrest">⏱ 2-3 min</span>
+              <span class="exmusc">Cuáds · Glúteos</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/IZxyjW7MPJQ/mqdefault.jpg" alt="Prensa de piernas unilateral">
+          <p class="extip">💡 Posición baja/media/alta de pie, no redondear la espalda</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=IZxyjW7MPJQ" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb3-3">
+        <div class="exrow" onclick="toggleEx('fb3-3')">
+          <img class="exthumb" src="https://img.youtube.com/vi/gwLzBJYoWlI/mqdefault.jpg" alt="Elevación de pantorrillas excéntrica" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Elevación de pantorrillas excéntrica</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 8 RPE8</span>
+              <span class="exrest">⏱ 1-2 min</span>
+              <span class="exmusc">Gemelos</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/gwLzBJYoWlI/mqdefault.jpg" alt="Elevación de pantorrillas excéntrica">
+          <p class="extip">💡 Concéntrico con 2 piernas, excéntrico unilateral 3 seg</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=gwLzBJYoWlI" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb3-4">
+        <div class="exrow" onclick="toggleEx('fb3-4')">
+          <img class="exthumb" src="https://img.youtube.com/vi/ykJmrZ5v0Oo/mqdefault.jpg" alt="Curl inclinado mancuernas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Curl inclinado mancuernas</div>
+            <div class="exmeta">
+              <span class="exsets">2 × 10 RPE8</span>
+              <span class="exrest">⏱ 1-2 min</span>
+              <span class="exmusc">Bíceps</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/ykJmrZ5v0Oo/mqdefault.jpg" alt="Curl inclinado mancuernas">
+          <p class="extip">💡 Banco a 45°, hombros hacia atrás, codos fijos</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=ykJmrZ5v0Oo" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb3-5">
+        <div class="exrow" onclick="toggleEx('fb3-5')">
+          <img class="exthumb" src="https://img.youtube.com/vi/wiBgNFfEWNM/mqdefault.jpg" alt="Crunch en polea / bicicleta" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Crunch en polea / bicicleta</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 15 RPE8</span>
+              <span class="exrest">⏱ 1-2 min</span>
+              <span class="exmusc">Abdomen</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/wiBgNFfEWNM/mqdefault.jpg" alt="Crunch en polea / bicicleta">
+          <p class="extip">💡 Flexiona y rota la columna, codo izq a rodilla der y viceversa</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=wiBgNFfEWNM" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="wcard">
+    <div class="whead">
+      <div class="wicon wi-b">⚡</div>
+      <div><div class="wtitle">FB Día 4 — Foco Fuerza Total</div><div class="wsub">Viernes · Deadlift + Bench con variaciones</div></div>
+    </div>
+    <div class="fbnote">📖 Block 2 Nippard: top set pesado + back-off sets. Máxima exigencia en el primer movimiento, técnica en el resto.</div>
+    <ul class="exlist">
+      <li class="exitem" id="fb4-0">
+        <div class="exrow" onclick="toggleEx('fb4-0')">
+          <img class="exthumb" src="https://img.youtube.com/vi/op9kVnSso6Q/mqdefault.jpg" alt="Peso muerto convencional" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Peso muerto convencional</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 5 @ 82.5%1RM</span>
+              <span class="exrest">⏱ 4-6 min</span>
+              <span class="exmusc">Post-cadena</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/op9kVnSso6Q/mqdefault.jpg" alt="Peso muerto convencional">
+          <p class="extip">💡 Espalda neutra, barra rozando piernas, empuja el suelo</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=op9kVnSso6Q" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb4-1">
+        <div class="exrow" onclick="toggleEx('fb4-1')">
+          <img class="exthumb" src="https://img.youtube.com/vi/vcBig73ojpE/mqdefault.jpg" alt="Press banca con pausa" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Press banca con pausa</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 6-8 RPE8</span>
+              <span class="exrest">⏱ 3-4 min</span>
+              <span class="exmusc">Pecho</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/vcBig73ojpE/mqdefault.jpg" alt="Press banca con pausa">
+          <p class="extip">💡 Pausa de 3 segundos en el pecho, hunde las mancuernas al máximo</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=vcBig73ojpE" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb4-2">
+        <div class="exrow" onclick="toggleEx('fb4-2')">
+          <img class="exthumb" src="https://img.youtube.com/vi/2C-uNgKwPLE/mqdefault.jpg" alt="Sentadilla búlgara mancuernas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Sentadilla búlgara mancuernas</div>
+            <div class="exmeta">
+              <span class="exsets">2 × 8-10 RPE9</span>
+              <span class="exrest">⏱ 2-3 min</span>
+              <span class="exmusc">Cuáds · Glúteos</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/2C-uNgKwPLE/mqdefault.jpg" alt="Sentadilla búlgara mancuernas">
+          <p class="extip">💡 Empieza con la pierna más débil, sentadilla profunda</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=2C-uNgKwPLE" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb4-3">
+        <div class="exrow" onclick="toggleEx('fb4-3')">
+          <img class="exthumb" src="https://img.youtube.com/vi/FWJR5Ve8bnQ/mqdefault.jpg" alt="Remo mancuerna (Meadows)" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Remo mancuerna (Meadows)</div>
+            <div class="exmeta">
+              <span class="exsets">4 × 12-15 RPE8</span>
+              <span class="exrest">⏱ 2-3 min</span>
+              <span class="exmusc">Espalda</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/FWJR5Ve8bnQ/mqdefault.jpg" alt="Remo mancuerna (Meadows)">
+          <p class="extip">💡 Apóyate con la otra mano, énfasis en la forma sobre el peso</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=FWJR5Ve8bnQ" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb4-4">
+        <div class="exrow" onclick="toggleEx('fb4-4')">
+          <img class="exthumb" src="https://img.youtube.com/vi/kwG2ipFRgfo/mqdefault.jpg" alt="Curl EZ barra 21s" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Curl EZ barra 21s</div>
+            <div class="exmeta">
+              <span class="exsets">3 × 21 RPE9</span>
+              <span class="exrest">⏱ 1-2 min</span>
+              <span class="exmusc">Bíceps</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/kwG2ipFRgfo/mqdefault.jpg" alt="Curl EZ barra 21s">
+          <p class="extip">💡 7 reps mitad inferior + 7 reps mitad superior + 7 reps ROM completo</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=kwG2ipFRgfo" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+      <li class="exitem" id="fb4-5">
+        <div class="exrow" onclick="toggleEx('fb4-5')">
+          <img class="exthumb" src="https://img.youtube.com/vi/Iwe6AmxVf7o/mqdefault.jpg" alt="Aperturas polea / mancuernas" loading="lazy">
+          <div class="exinfo">
+            <div class="exname">Aperturas polea / mancuernas</div>
+            <div class="exmeta">
+              <span class="exsets">2 × 12-15 RPE8</span>
+              <span class="exrest">⏱ 1-2 min</span>
+              <span class="exmusc">Pecho</span>
+            </div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="exexpand">
+          <img class="exbigimg" src="https://img.youtube.com/vi/Iwe6AmxVf7o/mqdefault.jpg" alt="Aperturas polea / mancuernas">
+          <p class="extip">💡 ROM completo, estira el pecho al fondo</p>
+          <a class="ytbtn" href="https://www.youtube.com/watch?v=Iwe6AmxVf7o" target="_blank" rel="noopener">
+            <span class="yticon">▶</span> Ver en YouTube
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<p class="sec">Volumen semanal</p>
+<div class="volcard">
+  <div class="voltitle">📊 Series por grupo muscular · Full Body 4 días</div>
+  <div class="volrow"><span class="volname">Pecho</span><div class="volbar"><div class="volfill" style="width:71%"></div></div><span class="volnum">10</span></div>
+<div class="volrow"><span class="volname">Espalda</span><div class="volbar"><div class="volfill" style="width:100%"></div></div><span class="volnum">14</span></div>
+<div class="volrow"><span class="volname">Hombros</span><div class="volbar"><div class="volfill" style="width:71%"></div></div><span class="volnum">10</span></div>
+<div class="volrow"><span class="volname">Bíceps</span><div class="volbar"><div class="volfill" style="width:64%"></div></div><span class="volnum">9</span></div>
+<div class="volrow"><span class="volname">Tríceps</span><div class="volbar"><div class="volfill" style="width:42%"></div></div><span class="volnum">6</span></div>
+<div class="volrow"><span class="volname">Cuádriceps</span><div class="volbar"><div class="volfill" style="width:78%"></div></div><span class="volnum">11</span></div>
+<div class="volrow"><span class="volname">Isquiotibiales</span><div class="volbar"><div class="volfill" style="width:71%"></div></div><span class="volnum">10</span></div>
+<div class="volrow"><span class="volname">Glúteos</span><div class="volbar"><div class="volfill" style="width:71%"></div></div><span class="volnum">10</span></div>
+<div class="volrow"><span class="volname">Gemelos</span><div class="volbar"><div class="volfill" style="width:28%"></div></div><span class="volnum">4</span></div>
+<div class="volrow"><span class="volname">Abdomen</span><div class="volbar"><div class="volfill" style="width:42%"></div></div><span class="volnum">6</span></div>
+
+</div>
+
+<p class="sec">Progresión recomendada</p>
+<div class="tipgrid">
+  <div class="tipcard"><div class="tiptitle" style="color:var(--blue)">📈 Block 1 (sem 1-4)</div><ul class="tiplist">
+    <li>Ejercicios primarios: % del 1RM (82.5–87.5%)</li>
+    <li>Secundarios/terciarios: progresión lineal de peso</li>
+    <li>RPE objetivo: 6-7 semana 1 → 8-9 semana 4</li>
+    <li>Objetivo: adaptarse a la frecuencia alta</li>
+  </ul></div>
+  <div class="tipcard"><div class="tiptitle" style="color:var(--orange)">🔥 Block 2 (sem 5-8)</div><ul class="tiplist">
+    <li>Top set pesado (RPE 9) + back-off sets</li>
+    <li>Variaciones de ejercicios para nuevo estímulo</li>
+    <li>Mayor énfasis en conexión mente-músculo</li>
+    <li>Toda la energía al movimiento principal</li>
+  </ul></div>
+  <div class="tipcard"><div class="tiptitle" style="color:var(--green)">🏃 Compatibilidad con carrera</div><ul class="tiplist">
+    <li>Días 1 y 4 (piernas pesadas): carrera ligera ese día máximo</li>
+    <li>Miércoles solo carrera: calidad máxima sin fatiga de gym</li>
+    <li>Reduce volumen de piernas en semanas de carrera larga +18km</li>
+    <li>Prioriza sueño en días consecutivos gym + carrera</li>
+  </ul></div>
+  <div class="tipcard"><div class="tiptitle" style="color:var(--purple)">💡 Claves del método</div><ul class="tiplist">
+    <li>No más de ~10 series por músculo por sesión (Krieger)</li>
+    <li>Stimulus-to-fatigue: prioriza ejercicios eficientes</li>
+    <li>Repeated bout effect: menos agujetas con el tiempo</li>
+    <li>Registra LSRPE en cada ejercicio para trackear progreso</li>
+  </ul></div>
+</div>
+
+</main>
+</div>
+
+</div><!-- end tab-gym -->
 
 <!-- ══ RUN TAB ══ -->
 <div id="tab-run" class="tabpanel">
@@ -1092,6 +1798,19 @@ if (!isTouch) {
     box.style.left = x + 'px';
     box.style.top = y + 'px';
   }
+
+// ── Gym sub-tab switching
+function switchGymSub(id) {
+  document.querySelectorAll('.gymsubtabpanel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.gymsubtab').forEach(b => {
+    b.classList.remove('act-ul', 'act-fb');
+  });
+  document.getElementById('gymtab-' + id).style.display = 'block';
+  const btn = document.getElementById('st-' + id);
+  btn.classList.add(id === 'ul' ? 'act-ul' : 'act-fb');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
 }
 </script>
 </body>
